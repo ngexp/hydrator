@@ -1,0 +1,38 @@
+{
+  "name": "ngexp/hydrator",
+  "description": "Hydration and validation of data to a pre-defined class structure controlled by php 8 attributes",
+  "keywords": ["hydrate", "hydration", "hydrator", "type safe", "validate", "validation", "validator", "attribute", "array", "class", "primitives", "depth"],
+  "homepage": "https://github.com/ngexp/hydrator",
+  "type": "library",
+  "license": "MIT",
+  "prefer-stable": true,
+  "authors": [
+    {
+      "name":"Johan Gustafsson",
+      "role": "developer"
+    }
+  ],
+  "scripts": {
+    "test": "phpunit tests",
+    "watch":"find src -name *.php | entr phpstan analyse -c phpstan.neon",
+    "phpstan": "phpstan analyse -c phpstan.neon"
+  },
+  "require": {
+    "php": ">=8.0",
+    "ext-ctype": "*"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "9.5.20",
+    "phpstan/phpstan": "1.7.14"
+  },
+  "autoload": {
+    "psr-4": {
+      "Ngexp\\Hydrator\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Ngexp\\Hydrator\\Tests\\": "tests/"
+    }
+  }
+}
