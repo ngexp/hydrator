@@ -87,12 +87,14 @@ class Context
     return $this->failureMessages;
   }
 
-  public function inheritFailState(Context $context): void
+  public function inheritFailState(Context $context): Context
   {
     foreach ($context->getFailureMessages() as $failureMessage) {
       $this->failureMessages[] = $failureMessage;
     }
     $this->isValid = $context->isValid();
+
+    return $this;
   }
 
   public function withValue(mixed $value): Context
