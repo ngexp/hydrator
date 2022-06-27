@@ -1,10 +1,14 @@
+[![PHPstan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg)](https://phpstan.org/)
+[![PHP Composer](https://github.com/ngexp/hydrator/actions/workflows/php.yml/badge.svg)](https://github.com/ngexp/hydrator/actions/workflows/php.yml)
+
 # Ngexp/hydrator
 
-This library allows you to define your data transfer objects with attributes. There are two types of attributes, the hydrator attribute and the constraint attribute. The hydrator attribute modifies data and the constraint attribute validates data. Here is a small taste of the features it offers:
+This library hydrates and instantiates classes. Attributes allow you to modify, convert and validate the data before it hydrates the properties. There are two types of attributes, the hydrator attribute and the constraint attribute. The hydrator attribute modifies data and the constraint attribute validates data. Here is a small taste of the features this library offers:
 
 ✅ &nbsp;Many attributes available to modify and validate data  
-✅ &nbsp;Reusable hydrator for the same class type for speed    
+✅ &nbsp;Reusable hydrator for the same class type using memoized reflection for speed    
 ✅ &nbsp;Easily extendable with new attributes   
+✅ &nbsp;Easily extendable with new adapters for hydration data  
 ✅ &nbsp;Strict type checking  
 ✅ &nbsp;Hydrate to any depth  
 ✅ &nbsp;Error messages can be modified   
