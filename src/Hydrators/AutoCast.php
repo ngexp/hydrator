@@ -48,6 +48,9 @@ class AutoCast extends MessageHandler implements IHydratorAttribute
         $hydrate = new CoerceString();
         return $hydrate->hydrateValue($context);
 
+      case Type::MIXED:
+        return $context->asValid();
+
       default:
         return $context->withFailure($this->template(self::AUTO_FAIL));
     }
