@@ -32,7 +32,7 @@ class CoerceBool extends MessageHandler implements IHydratorAttribute
     $result = filter_var($context->getValue(), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     if (is_null($result)) {
       return $context->withFailure($this->template(self::INVALID_TYPE));
-    };
+    }
 
     return $context->withValue($result);
   }

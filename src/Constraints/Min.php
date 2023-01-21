@@ -25,7 +25,7 @@ class Min extends MessageHandler implements IConstraintAttribute
    * @param int                   $min
    * @param array<string, string> $messageTemplates
    */
-  public function __construct(private int $min = 0, array $messageTemplates = [])
+  public function __construct(private readonly int $min = 0, array $messageTemplates = [])
   {
     $this->updateMessageTemplates($messageTemplates);
   }

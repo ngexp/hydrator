@@ -6,7 +6,7 @@ namespace Ngexp\Hydrator;
 
 class FailureMessage
 {
-  public function __construct(private string $code, private string $message)
+  public function __construct(private readonly string $code, private readonly string $message)
   {
   }
 

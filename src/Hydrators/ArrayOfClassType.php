@@ -28,7 +28,7 @@ class ArrayOfClassType extends MessageHandler implements IHydratorAttribute
    * @param class-string          $classType
    * @param array<string, string> $messageTemplates
    */
-  public function __construct(private string $classType, array $messageTemplates = [])
+  public function __construct(private readonly string $classType, array $messageTemplates = [])
   {
     $this->updateMessageTemplates($messageTemplates);
   }

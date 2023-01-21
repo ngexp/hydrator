@@ -44,7 +44,6 @@ trait Reflection
       }
 
       // A private property and a public set method that share the same name also shares the same attributes.
-      /** @var ResolvedProperty $resolvedProperty */
       foreach ($resolvedProperties->getProperties() as $resolvedProperty) {
         $propertyName = $resolvedProperty->getPropertyName();
         $property = $reflectionClass->getProperty($propertyName);

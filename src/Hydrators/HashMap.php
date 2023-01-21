@@ -30,8 +30,10 @@ class HashMap extends MessageHandler implements IHydratorAttribute
    * @param string                $valueName The name of the value for the hash map expected from the hydrated data.
    * @param array<string, string> $messageTemplates
    */
-  public function __construct(private string $keyName, private string $valueName, array $messageTemplates = [])
-  {
+  public function __construct(
+    private readonly string $keyName,
+    private readonly string $valueName, array $messageTemplates = []
+  ) {
     $this->updateMessageTemplates($messageTemplates);
   }
 

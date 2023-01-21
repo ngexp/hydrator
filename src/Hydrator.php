@@ -7,7 +7,6 @@ namespace Ngexp\Hydrator;
 use Ngexp\Hydrator\Adapters\HydrationAdapter;
 use Ngexp\Hydrator\Hydrators\ClassType;
 use Ngexp\Hydrator\Traits\Reflection;
-use ReflectionException;
 use RuntimeException;
 
 class Hydrator
@@ -19,7 +18,7 @@ class Hydrator
   /**
    * @param class-string $className
    */
-  public function __construct(private string $className)
+  public function __construct(private readonly string $className)
   {
     if (!class_exists($className)) {
       throw new RuntimeException("Class $className does not exist");

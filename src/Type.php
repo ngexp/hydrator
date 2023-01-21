@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Ngexp\Hydrator;
 
-class Type
+enum Type: string
 {
   const BOOL = "bool";
   const INT = "int";
@@ -12,5 +12,6 @@ class Type
   const STRING = "string";
   const ARRAY = "array";
   const NULL = "NULL";
+  const OBJECT = "object";
   const MIXED = "mixed";
 }

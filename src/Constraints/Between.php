@@ -52,7 +52,7 @@ class Between extends MessageHandler implements IConstraintAttribute
 
       default:
         return $context->withFailure($this->template(self::INVALID_TYPE));
-    };
+    }
 
     return $context->asValid();
   }

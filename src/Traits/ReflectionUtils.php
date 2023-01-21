@@ -23,7 +23,7 @@ trait ReflectionUtils
       "double" => Type::FLOAT,
       "string" => Type::STRING,
       "array" => Type::ARRAY,
-      "object" => get_class($variable) ?: "object",
+      "object" => get_class($variable) ?: Type::OBJECT,
       "NULL" => Type::NULL,
       default => throw new RuntimeException("Unknown type"),
     };

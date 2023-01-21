@@ -23,7 +23,7 @@ class LeftTrim extends MessageHandler implements IHydratorAttribute
    * @param string                $characters
    * @param array<string, string> $messageTemplates
    */
-  public function __construct(private string $characters = " \t\n\r\0\x0B", array $messageTemplates = [])
+  public function __construct(private readonly string $characters = " \t\n\r\0\x0B", array $messageTemplates = [])
   {
     $this->updateMessageTemplates($messageTemplates);
   }

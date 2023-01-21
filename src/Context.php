@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace Ngexp\Hydrator;
 
+use http\Message;
 use Ngexp\Hydrator\Traits\ReflectionUtils;
 use Ngexp\Hydrator\Traits\StringFormatting;
 use RuntimeException;
@@ -24,7 +25,7 @@ class Context
    * @param \Ngexp\Hydrator\ResolvedProperty|null $property
    * @param mixed                                  $value
    */
-  public function __construct(private ?ResolvedProperty $property, private mixed $value)
+  public function __construct(private readonly ?ResolvedProperty $property, private mixed $value)
   {
   }
 
@@ -122,9 +123,13 @@ class Context
    *
    * @return Context
    */
-  public function withFailure(array $message, array $extraParameters = []): Context
+  public function withFailure(array|string $message, array $extraParameters = []): Context
   {
-    $this->failureMessages[] = $this->createFailureMessage($message, $extraParameters);
+    if (is_array($message)) {
+      $this->failureMessages[] = $this->createFailureMessage($message, $extraParameters);
+    } else if (is_string($message)) {
+      $this->failureMessages[] = $this->createFailureMessage(['' => $message], $extraParameters);
+    }
     $this->isValid = false;
 
     return $this;

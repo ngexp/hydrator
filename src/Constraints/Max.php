@@ -25,7 +25,7 @@ class Max extends MessageHandler implements IConstraintAttribute
    * @param int                   $max
    * @param array<string, string> $messageTemplates
    */
-  public function __construct(private int $max = 0, array $messageTemplates = [])
+  public function __construct(private readonly int $max = 0, array $messageTemplates = [])
   {
     $this->updateMessageTemplates($messageTemplates);
   }

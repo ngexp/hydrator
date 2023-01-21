@@ -1,4 +1,4 @@
-<?php /** @noinspection PhpMultipleClassDeclarationsInspection */
+<?php
 
 declare(strict_types=1);
 
@@ -15,19 +15,19 @@ class ResolvedProperty
   const SET_BY_METHOD = 1;
 
   /**
-   * @param string                           $name
-   * @param \ReflectionType|null             $reflectionType
-   * @param int                              $setBy
-   * @param bool                             $isOptional
+   * @param string                                   $name
+   * @param \ReflectionType|null                     $reflectionType
+   * @param int                                      $setBy
+   * @param bool                                     $isOptional
    * @param array<int, \ReflectionAttribute<object>> $attributes
    */
   public function __construct(
-    private string          $name,
-    private ?ReflectionType $reflectionType,
+    private readonly string          $name,
+    private readonly ?ReflectionType $reflectionType,
     #[ExpectedValues([self::SET_BY_PROPERTY, self::SET_BY_METHOD])]
-    private int             $setBy,
-    private bool            $isOptional,
-    private array           $attributes
+    private readonly int             $setBy,
+    private bool                     $isOptional,
+    private array                    $attributes
   )
   {
   }

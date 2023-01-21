@@ -15,7 +15,7 @@ class HydratorException extends Exception
    * @param string                                      $message
    * @param array<int, \Ngexp\Hydrator\FailureMessage> $failureMessages
    */
-  public function __construct(string $message, private array $failureMessages = [])
+  public function __construct(string $message, private readonly array $failureMessages = [])
   {
     parent::__construct($message);
   }
@@ -27,7 +27,6 @@ class HydratorException extends Exception
   {
     $result = [];
 
-    /** @var \Ngexp\Hydrator\FailureMessage $failureMessage */
     foreach ($this->failureMessages as $failureMessage) {
       $result[] = $failureMessage->getMessage();
     }
@@ -47,7 +46,6 @@ class HydratorException extends Exception
   {
     if ($development) {
       $report = $this->getMessage() . $newLine;
-      /** @var \Ngexp\Hydrator\FailureMessage $message */
       foreach ($this->failureMessages as $message) {
         $code = $message->getCode();
         $bump =

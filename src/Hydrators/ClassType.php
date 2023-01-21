@@ -43,7 +43,7 @@ class ClassType extends MessageHandler implements IHydratorAttribute, IResolvedA
    * @param class-string          $className
    * @param array<string, string> $messageTemplates
    */
-  public function __construct(private string $className, array $messageTemplates = [])
+  public function __construct(private readonly string $className, array $messageTemplates = [])
   {
     $this->updateMessageTemplates($messageTemplates);
   }
