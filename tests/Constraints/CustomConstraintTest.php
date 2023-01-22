@@ -7,6 +7,7 @@ namespace Ngexp\Hydrator\Tests\Constraints;
 
 use Ngexp\Hydrator\Constraints\CustomConstraint;
 use Ngexp\Hydrator\Context;
+use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\Tests\AttributeTestCase;
 
 class GreaterThan10 {
@@ -14,7 +15,7 @@ class GreaterThan10 {
   {
     $value = $context->getValue();
     if ($value < 10) {
-      return $context->withFailure("Less than 10");
+      return $context->withError("Less than 10");
     }
 
     return $context->asValid();
@@ -43,8 +44,8 @@ class CustomConstraintTest extends AttributeTestCase
     $context = $attr->constraint($context);
 
     $this->assertFalse($context->isValid());
-    $failure = $context->getFailureMessages()[0];
-    $this->assertEquals(CustomConstraint::NOT_A_CLASS, $failure->getErrorCode());
+    $error = $context->getErrors()->first();
+    $this->assertEquals(ErrorCode::CLASS_NAME, $error->getCode());
   }
 
   /** @throws \Exception */
@@ -55,7 +56,7 @@ class CustomConstraintTest extends AttributeTestCase
     $context = $attr->constraint($context);
 
     $this->assertFalse($context->isValid());
-    $failure = $context->getFailureMessages()[0];
-    $this->assertEquals(CustomConstraint::NOT_INVOKABLE, $failure->getErrorCode());
+    $error = $context->getErrors()->first();
+    $this->assertEquals(ErrorCode::INVOKABLE, $error->getCode());
   }
 }

@@ -17,12 +17,12 @@ trait StringFormatting
   }
 
   /**
-   * @param array<string, mixed> $parameters Data used by {placeholder} text.
    * @param string               $message    The message to hydrate.
+   * @param array<string, mixed> $parameters Data used by {placeholder} text.
    *
    * @return string
    */
-  public function hydrateString(array $parameters, string $message): string
+  public function hydrateString(string $message, array $parameters): string
   {
     foreach ($parameters as $key => $data) {
       $message = str_replace("{" . $key . "}", $this->valueToStringRepresentation($data), $message);

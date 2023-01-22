@@ -5,26 +5,19 @@ declare(strict_types = 1);
 namespace Ngexp\Hydrator\Constraints;
 
 use Attribute;
-use Ngexp\Hydrator\MessageHandler;
 use Ngexp\Hydrator\Context;
+use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\IConstraintAttribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class NotEmpty extends MessageHandler implements IConstraintAttribute
+class NotEmpty implements IConstraintAttribute
 {
-  const IS_EMPTY = "NotEmpty::IS_EMPTY";
-
-  /** @var array<string, string> */
-  protected array $messageTemplates = [
-    self::IS_EMPTY => "The \"{propertyName}\" property cannot be empty, got {value}.",
-  ];
-
   /**
-   * @param array<string, string> $messageTemplates
+   * @param string|null $message Custom error message
+   * @param string|null $errorCode Custom error code, will be ignored if message is not null.
    */
-  public function __construct(array $messageTemplates = [])
+  public function __construct(private readonly ?string $message = null, private readonly ?string $errorCode = null)
   {
-    $this->updateMessageTemplates($messageTemplates);
   }
 
   public function constraint(Context $context): Context
@@ -36,7 +29,10 @@ class NotEmpty extends MessageHandler implements IConstraintAttribute
       default => false
     };
     if (!$result) {
-      return $context->withFailure($this->useTemplate(self::IS_EMPTY));
+      if ($this->message) {
+        return $context->withErrorMessage($this->message);
+      }
+      return $context->withError($this->errorCode ?: ErrorCode::EMPTY);
     }
 
     return $context->asValid();

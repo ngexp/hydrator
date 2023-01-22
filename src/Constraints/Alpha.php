@@ -5,33 +5,31 @@ declare(strict_types = 1);
 namespace Ngexp\Hydrator\Constraints;
 
 use Attribute;
-use Ngexp\Hydrator\MessageHandler;
+use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\IConstraintAttribute;
 use Ngexp\Hydrator\Context;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class Alpha extends MessageHandler implements IConstraintAttribute
+class Alpha implements IConstraintAttribute
 {
   const NOT_ALPHA = "Alpha::NOT_ALPHA";
 
-  /** @var array<string, string> */
-  protected array $messageTemplates = [
-    self::NOT_ALPHA => "The \"{propertyName}\" property must have a valid alphabetic string value, got {value}."
-  ];
-
   /**
-   * @param array<string, string> $messageTemplates
+   * @param string|null $message Custom error message
+   * @param string|null $errorCode Custom error code, will be ignored if message is not null.
    */
-  public function __construct(array $messageTemplates = [])
+  public function __construct(private readonly ?string $message = null, private readonly ?string $errorCode = null)
   {
-    $this->updateMessageTemplates($messageTemplates);
   }
 
   public function constraint(Context $context): Context
   {
     $result = ctype_alpha($context->getValue());
     if (!$result) {
-      return $context->withFailure($this->useTemplate(self::NOT_ALPHA));
+      if ($this->message) {
+        return $context->withErrorMessage($this->message);
+      }
+      return $context->withError($this->errorCode ?: ErrorCode::ALPHA);
     }
 
     return $context->asValid();

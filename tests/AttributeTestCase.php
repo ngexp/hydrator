@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Ngexp\Hydrator\Tests;
 
 use Ngexp\Hydrator\Context;
+use Ngexp\Hydrator\Hydrators\ClassType;
 use Ngexp\Hydrator\ResolvedProperty;
 use Ngexp\Hydrator\Traits\ReflectionUtils;
 use PHPUnit\Framework\TestCase;
@@ -22,6 +23,7 @@ abstract class AttributeTestCase extends TestCase
       ->method("getName")
       ->willReturn($expectedType !== "" ? $expectedType : $this->getVariableType($value));
     $property = new ResolvedProperty("", $reflectionNamedTypeStub, ResolvedProperty::SET_BY_PROPERTY, false, []);
-    return new Context($property, $value);
+    $classTypeStub = $this->createStub(ClassType::class);
+    return new Context($property, $value, $classTypeStub);
   }
 }

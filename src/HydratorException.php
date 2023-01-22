@@ -5,52 +5,42 @@ declare(strict_types=1);
 namespace Ngexp\Hydrator;
 
 use Exception;
-use JetBrains\PhpStorm\ArrayShape;
-use Ngexp\Hydrator\Hydrators\ArrayOfClassType;
-use Ngexp\Hydrator\Hydrators\ClassType;
 
 class HydratorException extends Exception
 {
   /**
-   * @param string                                      $message
-   * @param array<int, \Ngexp\Hydrator\FailureMessage> $failureMessages
+   * @param string                                $message
+   * @param \Ngexp\Hydrator\ErrorCollection       $errors
+   * @param \Ngexp\Hydrator\ErrorMessageAggregate $errorMessages
    */
-  public function __construct(string $message, private readonly array $failureMessages = [])
+  public function __construct(string                                 $message,
+                              private readonly ErrorCollection       $errors,
+                              private readonly ErrorMessageAggregate $errorMessages)
   {
     parent::__construct($message);
   }
 
-  /**
-   * @return array<string>
-   */
-  public function getMessages(): array
+  public function getErrors(): ErrorCollection
   {
-    $result = [];
-
-    foreach ($this->failureMessages as $failureMessage) {
-      $result[] = $failureMessage->getMessage();
-    }
-
-    return $result;
+    return $this->errors;
   }
 
   /**
-   * @return array<\Ngexp\Hydrator\FailureMessage>
+   * @return \Ngexp\Hydrator\ErrorMessageAggregate
    */
-  public function getFailureMessages(): array
+  public function getErrorMessages(): ErrorMessageAggregate
   {
-    return $this->failureMessages;
+    return $this->errorMessages;
   }
 
-  public function generateReport(string $newLine = "\n", bool $development = true): string
+  public function generateReport(string $title = "Hydration Error",
+                                 string $newLine = "\n",
+                                 bool   $debug = true): string
   {
-    if ($development) {
-      $report = $this->getMessage() . $newLine;
-      foreach ($this->failureMessages as $message) {
-        $code = $message->getErrorCode();
-        $bump =
-          ($code != ClassType::CLASS_ERROR && $code !== ClassType::PROP_ERROR && $code !== ArrayOfClassType::PROP_ERROR) ? "\t" : "";
-        $report .= $bump . $message->getMessage() . $newLine;
+    if ($debug) {
+      $report = $title . $newLine;
+      foreach ($this->errorMessages as $error) {
+        $report .= $error . $newLine;
       }
       return $report;
     } else {

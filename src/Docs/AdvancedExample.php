@@ -2,6 +2,8 @@
 
 declare(strict_types = 1);
 
+namespace Ngexp\Hydrator\Docs;
+
 require_once '../../vendor/autoload.php';
 
 use Ngexp\Hydrator\Adapters\JsonAdapter;
@@ -65,7 +67,7 @@ class UserDTO
   #[Trim, Between(max: 45)]
   private string $name;
 
-  #[Min(10, [Min::TOO_SMALL => "User must be at least {min} years old."])]
+  #[Min(10)]
   private int $age;
 
   #[ArrayOfClassType(HistoryDTO::class)]

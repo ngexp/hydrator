@@ -6,10 +6,10 @@ namespace Ngexp\Hydrator\Hydrators;
 
 use Attribute;
 use Ngexp\Hydrator\Context;
+use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\IConstraintAttribute;
 use Ngexp\Hydrator\IResolvedAttribute;
 use Ngexp\Hydrator\IHydratorAttribute;
-use Ngexp\Hydrator\MessageHandler;
 use Ngexp\Hydrator\ResolvedProperties;
 use Ngexp\Hydrator\ResolvedProperty;
 use Ngexp\Hydrator\Traits\Reflection;
@@ -19,38 +19,24 @@ use ReflectionException;
 use RuntimeException;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class ClassType extends MessageHandler implements IHydratorAttribute, IResolvedAttribute
+class ClassType implements IHydratorAttribute, IResolvedAttribute
 {
   use Reflection;
 
-  const CLASS_ERROR = "ClassType::CLASS_ERROR";
-  const PROP_ERROR = "ClassType::PROP_ERROR";
-  const REQUIRED_PROP = "ClassType::REQUIRED_PROP";
-  const EXPECTED_TYPE = "ClassType::EXPECTED_TYPE";
-  const NOT_NULL = "ClassType::NOT_NULL";
-
+  private readonly string $uid;
   private ?ResolvedProperties $resolvedProperties = null;
 
-  protected array $messageTemplates = [
-    self::CLASS_ERROR => "Error in the instance of {classType}.",
-    self::PROP_ERROR => "Error in the property \"{propertyName}\" of type \"{classType}\".",
-    self::REQUIRED_PROP => "Required value for the \"{propertyName}\" property is missing.",
-    self::EXPECTED_TYPE => "The \"{propertyName}\" property expected a value of type {expectedType}, got a value of type {valueType}.",
-    self::NOT_NULL => "The \"{propertyName}\" property expected non nullable type {expectedType}, got nul.",
-  ];
-
   /**
-   * @param class-string          $className
-   * @param array<string, string> $messageTemplates
+   * @param class-string $className
    */
-  public function __construct(private readonly string $className, array $messageTemplates = [])
+  public function __construct(private readonly string $className)
   {
-    $this->updateMessageTemplates($messageTemplates);
+    $this->uid = uniqid();
   }
 
   public function hydrateValue(Context $context): Context
   {
-    // If we don't get the resolved properties then resolve them now. This usually happens on depth calls, while
+    // If we didn't get the resolved properties then resolve them now. This usually happens on depth calls, while
     // we pre-resolve on shallow classes for speed.
     if (!$this->resolvedProperties) {
       $this->resolvedProperties = $this->resolveProperties($this->className);
@@ -58,16 +44,22 @@ class ClassType extends MessageHandler implements IHydratorAttribute, IResolvedA
     $classInstance = $this->createClassInstance($this->className);
     $hydrationData = $context->getValue();
 
+    // A class must always have hydration data in form of an array.
+    if (!is_array($hydrationData)) {
+      return $context->withError(ErrorCode::INVALID_TYPE, ['type' => $this->className]);
+    }
+
     foreach ($this->resolvedProperties->getProperties() as $property) {
       $propertyName = $property->getPropertyName();
       $value = $hydrationData[$propertyName] ?? null;
-      $propContext = new Context($property, $value);
+      $propContext = new Context($property, $value, $this);
+      $propContext->setParentContext($context);
 
       // Check if we have the data to hydrate the property with.
       if (!array_key_exists($propertyName, $hydrationData)) {
         if (!$property->isOptional()) {
-          $propContext->withFailure($this->useTemplate(self::REQUIRED_PROP));
-          $context->inheritFailState($propContext);
+          $propContext->withError(ErrorCode::REQUIRED);
+          $context->inheritState($propContext);
         }
         continue;
       }
@@ -77,7 +69,7 @@ class ClassType extends MessageHandler implements IHydratorAttribute, IResolvedA
       if ($propContext->getValueType() !== Type::NULL) {
         $propContext = $this->runHydrators($propContext);
         if (!$propContext->isValid()) {
-          $context->inheritFailState($propContext);
+          $context->inheritState($propContext);
           continue;
         }
       }
@@ -86,25 +78,21 @@ class ClassType extends MessageHandler implements IHydratorAttribute, IResolvedA
       // has run, since they might have changed its type.
       $propContext = $this->verifyTypeMatch($propContext);
       if (!$propContext->isValid()) {
-        $context->inheritFailState($propContext);
+        $context->inheritState($propContext);
         continue;
       }
 
       // Now go through all constraints attributes and verify that the value pass all the checks.
       $propContext = $this->runConstraints($propContext);
       if (!$propContext->isValid()) {
-        $context->inheritFailState($propContext);
+        $context->inheritState($propContext);
         continue;
       }
 
       $this->setPropertyValue($classInstance, $propContext);
     }
     if (!$context->isValid()) {
-      if ($context->hasProperty()) {
-        return $context->withMainFailure($this->useTemplate(self::PROP_ERROR), ["classType" => $this->className]);
-      } else {
-        return $context->withMainFailure($this->useTemplate(self::CLASS_ERROR), ["classType" => $this->className]);
-      }
+      return $context;
     }
 
     return $context->withValue($classInstance);
@@ -172,15 +160,26 @@ class ClassType extends MessageHandler implements IHydratorAttribute, IResolvedA
     $expectedType = $context->getExpectedType();
     $actualType = $context->getValueType();
 
-    if ($expectedType !== Type::MIXED && $actualType !== $expectedType) {
-      // NULL is returned as a type, verify if the property allows null.
-      if ($actualType === Type::NULL) {
-        if (!$context->getProperty()->allowsNull()) {
-          return $context->withFailure($this->useTemplate(self::NOT_NULL));
-        }
-      } else {
-        return $context->withFailure($this->useTemplate(self::EXPECTED_TYPE));
+    if ($actualType === Type::NULL) {
+      if ($context->getProperty()->allowsNull()) {
+        return $context->asValid();
       }
+      return $context->withError(ErrorCode::NULL);
+    }
+
+    if ($context->getProperty()->isEnum()) {
+      $value = $context->getProperty()->resolveEnumCase($context->getValue());
+      if (!$value) {
+        return $context->withError(ErrorCode::ENUM);
+      }
+      $context->setValue($value);
+      return $context->asValid();
+    }
+
+    if ($expectedType !== Type::MIXED && $actualType !== $expectedType) {
+
+        return $context->withError(ErrorCode::EXPECTED_TYPE);
+
     }
     return $context->asValid();
   }
@@ -201,5 +200,20 @@ class ClassType extends MessageHandler implements IHydratorAttribute, IResolvedA
   function setResolvedProperties(ResolvedProperties $resolvedProperties): void
   {
     $this->resolvedProperties = $resolvedProperties;
+  }
+
+  public function getUid(): string
+  {
+    return $this->uid;
+  }
+
+  public function getClassName(): string
+  {
+    return $this->className;
+  }
+
+  public function equal(ClassType $classType): bool
+  {
+    return $this->uid === $classType->getUid();
   }
 }

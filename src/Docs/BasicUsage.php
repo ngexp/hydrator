@@ -1,10 +1,13 @@
-<?php
+<?php /** @noinspection PhpIllegalPsrClassPathInspection */
 
 declare(strict_types = 1);
+
+namespace Ngexp\Hydrator\Docs;
 
 require_once '../../vendor/autoload.php';
 
 use Ngexp\Hydrator\Adapters\JsonAdapter;
+use Ngexp\Hydrator\Constraints\Min;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
 
@@ -12,7 +15,7 @@ use Ngexp\Hydrator\HydratorException;
 $json = <<<JSON
 {
   "name": "John Doe",
-  "age": 33
+  "age": 20
 }
 JSON;
 
@@ -20,6 +23,7 @@ JSON;
 class User
 {
   public string $name;
+  #[Min(30)]
   public int $age;
 }
 
@@ -32,5 +36,5 @@ try {
   var_dump($class);
 
 } catch (HydratorException $e) {
-  echo $e->generateReport();
+  echo $e->getMessage();
 }

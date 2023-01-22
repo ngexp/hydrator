@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace Ngexp\Hydrator\Tests\Hydrators;
 
 use Ngexp\Hydrator\Context;
+use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\Hydrators\CustomHydrator;
 use Ngexp\Hydrator\Tests\AttributeTestCase;
 use Ngexp\Hydrator\Type;
@@ -46,8 +47,8 @@ class CustomHydratorTest extends AttributeTestCase
     $context = $attr->hydrateValue($context);
 
     $this->assertFalse($context->isValid());
-    $failure = $context->getFailureMessages()[0];
-    $this->assertEquals(CustomHydrator::NOT_A_CLASS, $failure->getErrorCode());
+    $error = $context->getErrors()->first();
+    $this->assertEquals(ErrorCode::CLASS_NAME, $error->getCode());
   }
 
   /** @throws \Exception */
@@ -58,7 +59,7 @@ class CustomHydratorTest extends AttributeTestCase
     $context = $attr->hydrateValue($context);
 
     $this->assertFalse($context->isValid());
-    $failure = $context->getFailureMessages()[0];
-    $this->assertEquals(CustomHydrator::NOT_INVOKABLE, $failure->getErrorCode());
+    $error = $context->getErrors()->first();
+    $this->assertEquals(ErrorCode::INVOKABLE, $error->getCode());
   }
 }

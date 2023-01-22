@@ -16,9 +16,10 @@ class Hydrator
   private ResolvedProperties $resolvedProperties;
 
   /**
-   * @param class-string $className
+   * @param class-string          $className
+   * @param array<string, string> $customErrorMessages
    */
-  public function __construct(private readonly string $className)
+  public function __construct(private readonly string $className, private readonly array $customErrorMessages = [])
   {
     if (!class_exists($className)) {
       throw new RuntimeException("Class $className does not exist");
@@ -32,12 +33,15 @@ class Hydrator
    */
   public function hydrate(HydrationAdapter $adapter): object
   {
-    $context = new Context(null, $adapter->getHydrationData());
     $classType = new ClassType($this->className);
+    $context = new Context(null, $adapter->getHydrationData(), $classType);
     $classType->setResolvedProperties($this->resolvedProperties);
     $context = $classType->hydrateValue($context);
     if (!$context->isValid()) {
-      throw new HydratorException("Hydration failed.", $context->getFailureMessages());
+      $errorMessages = new ErrorMessageAggregate($context->getErrors(), $this->customErrorMessages);
+      throw new HydratorException(
+        $errorMessages->first(), $context->getErrors(), $errorMessages
+      );
     }
 
     return $context->getValue();

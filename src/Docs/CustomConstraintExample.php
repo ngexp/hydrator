@@ -20,7 +20,8 @@ class FromScandinavia {
     $value = strtolower(trim($value));
 
     if ($value !== "denmark" && $value !== "norway" && $value !== "sweden") {
-      return $context->withFailure("Not from Scandinavia");
+      // We can just return a message directly if we want to. Less flexible than returning an error code, but simpler.
+      return $context->withErrorMessage("{value} is not part of Scandinavia");
     }
 
     return $context->asValid();
@@ -48,5 +49,5 @@ try {
   var_dump($class);
 
 } catch (HydratorException $e) {
-  echo $e->generateReport();
+  echo $e->getMessage();
 }

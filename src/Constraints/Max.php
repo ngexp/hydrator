@@ -5,39 +5,35 @@ declare(strict_types=1);
 namespace Ngexp\Hydrator\Constraints;
 
 use Attribute;
-use Ngexp\Hydrator\MessageHandler;
+use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\IConstraintAttribute;
 use Ngexp\Hydrator\Context;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class Max extends MessageHandler implements IConstraintAttribute
+class Max implements IConstraintAttribute
 {
-  const NOT_A_NUMBER = "Max::NOT_A_NUMBER";
-  const TOO_LARGE = "Max::TOO_LARGE";
-
-  /** @var array<string, string> */
-  protected array $messageTemplates = [
-    self::NOT_A_NUMBER => "The value type for the \"{propertyName}\" property must be an int or float, got {value}.",
-    self::TOO_LARGE => "The \"{propertyName}\" property can not be greater than {max}, got {value}."
-  ];
-
   /**
-   * @param int                   $max
-   * @param array<string, string> $messageTemplates
+   * @param int         $max
+   * @param string|null $message Custom error message
+   * @param string|null $errorCode Custom error code, will be ignored if message is not null.
    */
-  public function __construct(private readonly int $max = 0, array $messageTemplates = [])
+  public function __construct(private readonly int $max = 0,
+                              private readonly ?string $message = null,
+                              private readonly ?string $errorCode = null)
   {
-    $this->updateMessageTemplates($messageTemplates);
   }
 
   public function constraint(Context $context): Context
   {
     $value = $context->getValue();
     if (!is_int($value) && !is_float($value)) {
-      return $context->withFailure($this->useTemplate(self::NOT_A_NUMBER));
+      return $context->withError(ErrorCode::INVALID_TYPE, ["type" => "int|float"]);
     }
     if ($value > $this->max) {
-      return $context->withFailure($this->useTemplate(self::TOO_LARGE), ["max" => $this->max]);
+      if ($this->message) {
+        return $context->withErrorMessage($this->message, ["max" => $this->max]);
+      }
+      return $context->withError($this->errorCode ?: ErrorCode::LARGE, ["max" => $this->max]);
     }
 
     return $context->asValid();

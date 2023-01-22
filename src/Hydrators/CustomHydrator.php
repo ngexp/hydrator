@@ -6,37 +6,24 @@ namespace Ngexp\Hydrator\Hydrators;
 
 use Attribute;
 use Ngexp\Hydrator\Context;
+use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\IHydratorAttribute;
-use Ngexp\Hydrator\MessageHandler;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class CustomHydrator extends MessageHandler implements IHydratorAttribute
+class CustomHydrator implements IHydratorAttribute
 {
-  const NOT_A_CLASS = "CustomHydrator::NOT_A_CLASS";
-  const NOT_INVOKABLE = "CustomHydrator::NOT_INVOKABLE";
-
-  /** @var array<string, string> */
-  protected array $messageTemplates = [
-    self::NOT_A_CLASS => "{className} does not exist.",
-    self::NOT_INVOKABLE => "{className} does not have an invokable method.",
-  ];
-
-  /**
-   * @param array<string, string> $messageTemplates
-   */
-  public function __construct(private readonly string $className, array $messageTemplates = [])
+  public function __construct(private readonly string $className)
   {
-    $this->updateMessageTemplates($messageTemplates);
   }
 
   public function hydrateValue(Context $context): Context
   {
-    if (! class_exists($this->className)) {
-      return $context->withFailure($this->useTemplate(self::NOT_A_CLASS), ['className' => $this->className]);
+    if (!class_exists($this->className)) {
+      return $context->withError(ErrorCode::CLASS_NAME, ['className' => $this->className]);
     }
     $hydrator = new $this->className;
-    if (! is_callable($hydrator)) {
-      return $context->withFailure($this->useTemplate(self::NOT_INVOKABLE), ['className' => $this->className]);
+    if (!is_callable($hydrator)) {
+      return $context->withError(ErrorCode::INVOKABLE, ['className' => $this->className]);
     }
 
     return $hydrator($context);

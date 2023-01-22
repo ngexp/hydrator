@@ -37,7 +37,7 @@ class User
 {
   public string $name;
 
-  #[FountainOfYouth()]
+  #[FountainOfYouth]
   public int $age;
 }
 

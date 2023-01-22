@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Ngexp\Hydrator;
 
-use http\Message;
+use Ngexp\Hydrator\Hydrators\ClassType;
 use Ngexp\Hydrator\Traits\ReflectionUtils;
 use Ngexp\Hydrator\Traits\StringFormatting;
 use RuntimeException;
@@ -15,23 +15,43 @@ class Context
   use ReflectionUtils;
   use StringFormatting;
 
-  /**
-   * @var array<\Ngexp\Hydrator\FailureMessage> array that stores all the message failures generated.
-   */
-  private array $failureMessages = [];
+  private ErrorCollection $errors;
   private bool $isValid = true;
+  private ?Context $parentContext = null;
 
   /**
    * @param \Ngexp\Hydrator\ResolvedProperty|null $property
-   * @param mixed                                  $value
+   * @param mixed                                 $value
+   * @param \Ngexp\Hydrator\Hydrators\ClassType   $classType
    */
-  public function __construct(private readonly ?ResolvedProperty $property, private mixed $value)
+  public function __construct(private readonly ?ResolvedProperty $property,
+                              private mixed                      $value,
+                              private readonly ClassType         $classType)
   {
+    $this->errors = new ErrorCollection();
   }
 
-  public function hasProperty(): bool
+  public function getClassType(): ClassType
   {
-    return !is_null($this->property);
+    return $this->classType;
+  }
+
+  public function getParentContext(): ?Context
+  {
+    return $this->parentContext;
+  }
+
+  public function setParentContext(Context $context): void
+  {
+    // Since we are merging contexts, this might not be a parent but a sibling.
+    if (!$this->getClassType()->equal($context->getClassType())) {
+      $this->parentContext = $context;
+    }
+  }
+
+  public function getErrors(): ErrorCollection
+  {
+    return $this->errors;
   }
 
   public function getProperty(): ResolvedProperty
@@ -51,9 +71,23 @@ class Context
     return $this->property->getType();
   }
 
+  public function hasProperty(): bool
+  {
+    return !is_null($this->property);
+  }
+
   public function isClassProperty(): bool
   {
-    return !is_null($this->property) && class_exists($this->property->getType());
+    if (is_null($this->property)) {
+      return false;
+    }
+
+    return $this->property->isClass();
+  }
+
+  public function isValid(): bool
+  {
+    return $this->isValid;
   }
 
   /**
@@ -80,19 +114,9 @@ class Context
     $this->value = $value;
   }
 
-  /**
-   * @return array<\Ngexp\Hydrator\FailureMessage>
-   */
-  public function getFailureMessages(): array
+  public function inheritState(Context $context): Context
   {
-    return $this->failureMessages;
-  }
-
-  public function inheritFailState(Context $context): Context
-  {
-    foreach ($context->getFailureMessages() as $failureMessage) {
-      $this->failureMessages[] = $failureMessage;
-    }
+    $this->errors->inheritErrors($context->getErrors());
     $this->isValid = $context->isValid();
 
     return $this;
@@ -105,31 +129,29 @@ class Context
   }
 
   /**
-   * @param array<string, string> $message
-   * @param array<string, mixed>  $extraParameters
+   * @param string               $errorCode
+   * @param array<string, mixed> $extraParameters
    *
    * @return Context
    */
-  public function withMainFailure(array $message, array $extraParameters = []): Context
+  public function withError(string $errorCode, array $extraParameters = []): Context
   {
-    array_unshift($this->failureMessages, FailureMessage::create($this, $message, $extraParameters));
+    $this->errors->addError(new Error($this, $errorCode, $extraParameters));
     $this->isValid = false;
+
     return $this;
   }
 
   /**
-   * @param array<string, string> $message
-   * @param array<string, mixed>  $extraParameters
+   * @param string               $message
+   * @param array<string, mixed> $extraParameters
    *
    * @return Context
    */
-  public function withFailure(array|string $message, array $extraParameters = []): Context
+  public function withErrorMessage(string $message, array $extraParameters = []): Context
   {
-    if (is_array($message)) {
-      $this->failureMessages[] = FailureMessage::create($this, $message, $extraParameters);
-    } else if (is_string($message)) {
-      $this->failureMessages[] = FailureMessage::create($this, ['ERROR' => $message], $extraParameters);
-    }
+    $extraParameters = array_merge($extraParameters, ["internalMessage" => $message]);
+    $this->errors->addError(new Error($this, Error::INTERNAL_CUSTOM_MESSAGE, $extraParameters));
     $this->isValid = false;
 
     return $this;
@@ -139,10 +161,5 @@ class Context
   {
     $this->isValid = true;
     return $this;
-  }
-
-  public function isValid(): bool
-  {
-    return $this->isValid;
   }
 }

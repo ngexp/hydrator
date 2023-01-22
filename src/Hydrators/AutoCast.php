@@ -6,26 +6,15 @@ namespace Ngexp\Hydrator\Hydrators;
 
 use Attribute;
 use Ngexp\Hydrator\Context;
+use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\IHydratorAttribute;
-use Ngexp\Hydrator\MessageHandler;
 use Ngexp\Hydrator\Type;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class AutoCast extends MessageHandler implements IHydratorAttribute
+class AutoCast implements IHydratorAttribute
 {
-  const AUTO_FAIL = "AutoCast::AUTO_FAIL";
-
-  /** @var array<string, string> */
-  protected array $messageTemplates = [
-    self::AUTO_FAIL => "The \"{propertyName}\" properties type {expectedType}, can not be auto casted.",
-  ];
-
-  /**
-   * @param array<string, string> $messageTemplates
-   */
-  public function __construct(array $messageTemplates = [])
+  public function __construct()
   {
-    $this->updateMessageTemplates($messageTemplates);
   }
 
   public function hydrateValue(Context $context): Context
@@ -52,7 +41,7 @@ class AutoCast extends MessageHandler implements IHydratorAttribute
         return $context->asValid();
 
       default:
-        return $context->withFailure($this->useTemplate(self::AUTO_FAIL));
+        return $context->withError(ErrorCode::AUTO);
     }
   }
 }

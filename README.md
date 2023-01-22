@@ -39,9 +39,12 @@ composer require ngexp/hydrator
 
 declare(strict_types = 1);
 
+namespace Ngexp\Hydrator\Docs;
+
 require_once '../../vendor/autoload.php';
 
 use Ngexp\Hydrator\Adapters\JsonAdapter;
+use Ngexp\Hydrator\Constraints\Min;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
 
@@ -49,7 +52,7 @@ use Ngexp\Hydrator\HydratorException;
 $json = <<<JSON
 {
   "name": "John Doe",
-  "age": 33
+  "age": 20
 }
 JSON;
 
@@ -57,6 +60,7 @@ JSON;
 class User
 {
   public string $name;
+  #[Min(30)]
   public int $age;
 }
 
@@ -69,26 +73,17 @@ try {
   var_dump($class);
 
 } catch (HydratorException $e) {
-  echo $e->generateReport();
+  echo $e->getMessage();
 }
 ```
 
-This will print out the following to the screen 
+Running this will print out an error:
 ```
-class User#12 (2) {
-  public string $name =>
-  string(8) "John Doe"
-  public int $age =>
-  int(33)
-}
+Ngexp\Hydrator\Docs\User::age can not be less than 30, got 20.
 ```
 
-Json data that doesn't match the class structure is ignored. Even in this basic form you get type checking, changing age to a string "33" will throw the following message:
-```
-Hydration failed.
-Error in the instance of User.
-  The "age" property expected a value of type int, got a value of type string.
-```
+We have an attribute set on the age property called Min, this is a constraint attribute that verifies
+that the value is at least 30, but the JSON value for age is only 20.
 
 The hydrator expect strict types, but we have a couple of attributes that can automatically convert to a specific type if possible, in this case adding the following attribute before the age property will get rid of the exception:
 
@@ -119,56 +114,50 @@ Different types of attributes are available, constraint attributes that limits w
 ### Constraint attributes
 Constraint attributes validate input values.
 
-| Attribute        | Description                                           | Parameters        |
-|:-----------------|:------------------------------------------------------|:------------------|
-| Alnum            | String must only contain alpha numeric characters     | message           |
-| Alpha            | String must only contain alphabetic characters        | message           |
-| Between          | String or array must be between min and max size      | min, max, message |
-| CustomConstraint | Custom Constraint, invoked from a class               | className         |
-| Digit            | String must only contain numbers                      | message           |
-| Email            | String must be an email addresses                     | message           |
-| Graph            | String must only contain visibly printable characters | message           |
-| Max              | Number must be less than or equal to max              | max, message      |
-| Min              | Number must be greater than or equal to min           | min, message      |
-| Negative         | Number must be less than 0                            | message           |
-| NegativeOrZero   | Number must be less than or equal to 0                | message           |
-| NotBlank         | String can not be empty or contain white spaces only  | message           | 
-| NotEmpty         | String or array can not be of size 0                  | message           |
-| Optional         | Data for property is optional                         |                   |
-| Pattern          | String must match regex pattern                       | pattern, message  |
-| Positive         | Number must be greater than 0                         | message           |
-| PositiveOrZero   | Number must be greater than or equal to 0             | message           | 
+| Attribute        | Description                                           | Arguments                    | Error codes it can return      |
+|:-----------------|:------------------------------------------------------|:-----------------------------|--------------------------------|
+| Alnum            | String must only contain alpha numeric characters     | errorCode, message           | ALNUM                          |
+| Alpha            | String must only contain alphabetic characters        | errorCode, message           | ALPHA                          |
+| Between          | String or array must be between min and max size      | min, max, errorCode, message | INVALID_TYPE, BETWEEN          |
+| CustomConstraint | Custom Constraint, invoked from a class               | className                    | CLASS_NAME, INVOKABLE          |
+| Digit            | String must only contain numbers                      | errorCode, message           | DIGIT                          |
+| Email            | String must be an email addresses                     | errorCode, message           | EMAIL                          |
+| Graph            | String must only contain visibly printable characters | errorCode, message           | GRAPH                          |
+| Max              | Number must be less than or equal to max              | max, errorCode               | INVALID_TYPE, TOO_LARGE        |
+| Min              | Number must be greater than or equal to min           | min, errorCode               | INVALID_TYPE, TOO_SMALL        |
+| Negative         | Number must be less than 0                            | errorCode, message           | INVALID_TYPE, NEGATIVE         |
+| NegativeOrZero   | Number must be less than or equal to 0                | errorCode, message           | INVALID_TYPE, NEGATIVE_OR_ZERO |
+| NotBlank         | String can not be empty or contain white spaces only  | errorCode, message           | BLANK, STRING                  | 
+| NotEmpty         | String or array can not be of size 0                  | errorCode, message           | EMPTY                          |
+| Optional         | Data for property is optional                         |                              |                                |
+| Pattern          | String must match regex pattern                       | pattern, errorCode           | STRING, NO_MATCH               |
+| Positive         | Number must be greater than 0                         | errorCode, message           | INVALID_TYPE, POSITIVE         |
+| PositiveOrZero   | Number must be greater than or equal to 0             | errorCode, message           | INVALID_TYPE, POSITIVE_OR_ZERO | 
 
-Use the message parameter to override the default error message if needed.
-
-Example: wv
-```php
-#[Between(min: 2, max: 30, message: [Between::NOT_BETWEEN => "Size of name must be between {min} and {max}"])]
-private string $name;
-```
+All constraints return an errorCode as part of the error message, if you need to override this with a custom message, you can set 
+your own unique error code here. Use the message parameter to override the default error message if needed.
 
 ### Hydration attributes
 Hydration attributes, transform the input value in some way.
 
-| Attribute        | Description                                                      | Parameters                  | 
-|:-----------------|:-----------------------------------------------------------------|:----------------------------|
-| ArrayOfClassType | Hydrate array with the specified class type                      | classType, message          |
-| AutoCast         | Auto casts simple primitive types to int, float, bool and string | message                     |
-| ClassType        | Cast class to specified class type                               | classType, message          |
-| CoerceBool       | Convert value to a bool type, can be 1, 0, on, of, true, false   | message                     |
-| CoerceFloat      | Convert value to float                                           | message                     |
-| CoerceInt        | Convert value to int                                             | message                     |
-| CoerceString     | Convert value to string                                          | message                     |
-| CustomHydrator   | Custom hydrator, invoked from a Class                            | className                   | 
-| HashMap          | Converts a tuple into an array hash map                          | keyName, valueName, message |
-| JsonDecode       | Converts a json string into a class or array type                | message                     |
-| LeftTrim         | Trim left side of string with specified characters               | characters, message         |
-| LowerCase        | Converts alpha characters to lower case characters               | message                     |
-| RightTrim        | Trim right side of string from specified characters              | characters, message         |
-| Trim             | Trim string before hydration                                     | message                     |
-| UpperCase        | Converts alpha characters to upper case characters               | message                     |
+| Attribute         | Description                                                      | Arguments          | Error codes it can return                      | 
+|:------------------|:-----------------------------------------------------------------|:-------------------|------------------------------------------------|
+| ArrayOfClassType  | Hydrate array with the specified class type                      | classType          | INVALID_TYPE                                   |
+| AutoCast          | Auto casts simple primitive types to int, float, bool and string |                    | AUTO                                           |
+| ClassType         | Cast class to specified class type                               | classType          | EXPECTED_TYPE, INVALID_TYPE, NULL, REQUIRED    |
+| CoerceBool        | Convert value to a bool type, can be 1, 0, on, of, true, false   |                    | COERCE                                         |
+| CoerceFloat       | Convert value to float                                           |                    | COERCE                                         |
+| CoerceInt         | Convert value to int                                             |                    | COERCE                                         |
+| CoerceString      | Convert value to string                                          |                    | COERCE                                         |
+| CustomHydrator    | Custom hydrator, invoked from a Class                            | className          | CLASS_NAME, INVOKABLE                          | 
+| HashMap           | Converts a tuple into an array hash map                          | keyName, valueName | ARRAY, HASHMAP, HASH_KEY_NAME, HASH_VALUE_NAME |
+| JsonDecode        | Converts a json string into a class or array type                |                    | ARRAY, JSON_ERROR, JSON_INVALID_TYPE           |
+| LeftTrim          | Trim left side of string with specified characters               | characters,        | STRING                                         |
+| LowerCase         | Converts alpha characters to lower case characters               |                    | STRING                                         |
+| RightTrim         | Trim right side of string from specified characters              | characters,        | STRING                                         |
+| Trim              | Trim string before hydration                                     |                    | STRING                                         |
+| UpperCase         | Converts alpha characters to upper case characters               |                    | STRING                                         |
 
-Use the message parameter to override the default error message if needed.
 
 ## Adapters
 To hydrate from different types of data, we supply two adapters at this time.
