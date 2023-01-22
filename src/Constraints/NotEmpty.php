@@ -36,7 +36,7 @@ class NotEmpty extends MessageHandler implements IConstraintAttribute
       default => false
     };
     if (!$result) {
-      return $context->withFailure($this->template(self::IS_EMPTY));
+      return $context->withFailure($this->useTemplate(self::IS_EMPTY));
     }
 
     return $context->asValid();

@@ -31,7 +31,7 @@ class Alnum extends MessageHandler implements IConstraintAttribute
   {
     $result = ctype_alnum($context->getValue());
     if (!$result) {
-      return $context->withFailure($this->template(self::NOT_ALNUM));
+      return $context->withFailure($this->useTemplate(self::NOT_ALNUM));
     }
 
     return $context->asValid();

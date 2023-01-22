@@ -31,7 +31,7 @@ class CoerceString extends MessageHandler implements IHydratorAttribute
   {
     $value = $context->getValue();
     if (is_array($value) || is_object($value)) {
-      return $context->withFailure($this->template(self::INVALID_TYPE));
+      return $context->withFailure($this->useTemplate(self::INVALID_TYPE));
     }
 
     return $context->withValue(strval($value));

@@ -112,7 +112,7 @@ class Context
    */
   public function withMainFailure(array $message, array $extraParameters = []): Context
   {
-    array_unshift($this->failureMessages, $this->createFailureMessage($message, $extraParameters));
+    array_unshift($this->failureMessages, FailureMessage::create($this, $message, $extraParameters));
     $this->isValid = false;
     return $this;
   }
@@ -126,35 +126,13 @@ class Context
   public function withFailure(array|string $message, array $extraParameters = []): Context
   {
     if (is_array($message)) {
-      $this->failureMessages[] = $this->createFailureMessage($message, $extraParameters);
+      $this->failureMessages[] = FailureMessage::create($this, $message, $extraParameters);
     } else if (is_string($message)) {
-      $this->failureMessages[] = $this->createFailureMessage(['' => $message], $extraParameters);
+      $this->failureMessages[] = FailureMessage::create($this, ['ERROR' => $message], $extraParameters);
     }
     $this->isValid = false;
 
     return $this;
-  }
-
-  /**
-   * @param array<string, string> $message         Failure message with its code and message text.
-   * @param array<string, mixed>  $extraParameters Contains extra placeholder values for specific failure messages.
-   *
-   * @return \Ngexp\Hydrator\FailureMessage
-   */
-  private function createFailureMessage(array $message, array $extraParameters = []): FailureMessage
-  {
-    $parameters = array_merge(
-      [
-        "propertyName" => $this->hasProperty() ? $this->getProperty()->getPropertyName() : "",
-        "expectedType" => $this->hasProperty() ? $this->getExpectedType() : "",
-        "value" => $this->value,
-        "valueType" => $this->getValueType(),
-      ],
-      $extraParameters
-    );
-
-    $key = key($message) ?? "none";
-    return new FailureMessage($key, $this->hydrateString($parameters, $message[$key]));
   }
 
   public function asValid(): Context

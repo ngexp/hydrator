@@ -32,7 +32,7 @@ class RightTrim extends MessageHandler implements IHydratorAttribute
   {
     $value = $context->getValue();
     if (!is_string($value)) {
-      return $context->withFailure($this->template(self::NOT_A_STRING));
+      return $context->withFailure($this->useTemplate(self::NOT_A_STRING));
     }
 
     return $context->withValue(rtrim($value, $this->characters));

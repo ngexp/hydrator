@@ -33,10 +33,10 @@ class NegativeOrZero extends MessageHandler implements IConstraintAttribute
   {
     $value = $context->getValue();
     if (!is_int($value) && !is_float($value)) {
-      $context->withFailure($this->template(self::NOT_A_NUMBER));
+      $context->withFailure($this->useTemplate(self::NOT_A_NUMBER));
     }
     if ($value > 0) {
-      return $context->withFailure($this->template(self::NOT_NEGATIVE_OR_ZERO));
+      return $context->withFailure($this->useTemplate(self::NOT_NEGATIVE_OR_ZERO));
     }
 
     return $context->asValid();

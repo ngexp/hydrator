@@ -66,7 +66,7 @@ class ClassType extends MessageHandler implements IHydratorAttribute, IResolvedA
       // Check if we have the data to hydrate the property with.
       if (!array_key_exists($propertyName, $hydrationData)) {
         if (!$property->isOptional()) {
-          $propContext->withFailure($this->template(self::REQUIRED_PROP));
+          $propContext->withFailure($this->useTemplate(self::REQUIRED_PROP));
           $context->inheritFailState($propContext);
         }
         continue;
@@ -101,9 +101,9 @@ class ClassType extends MessageHandler implements IHydratorAttribute, IResolvedA
     }
     if (!$context->isValid()) {
       if ($context->hasProperty()) {
-        return $context->withMainFailure($this->template(self::PROP_ERROR), ["classType" => $this->className]);
+        return $context->withMainFailure($this->useTemplate(self::PROP_ERROR), ["classType" => $this->className]);
       } else {
-        return $context->withMainFailure($this->template(self::CLASS_ERROR), ["classType" => $this->className]);
+        return $context->withMainFailure($this->useTemplate(self::CLASS_ERROR), ["classType" => $this->className]);
       }
     }
 
@@ -176,10 +176,10 @@ class ClassType extends MessageHandler implements IHydratorAttribute, IResolvedA
       // NULL is returned as a type, verify if the property allows null.
       if ($actualType === Type::NULL) {
         if (!$context->getProperty()->allowsNull()) {
-          return $context->withFailure($this->template(self::NOT_NULL));
+          return $context->withFailure($this->useTemplate(self::NOT_NULL));
         }
       } else {
-        return $context->withFailure($this->template(self::EXPECTED_TYPE));
+        return $context->withFailure($this->useTemplate(self::EXPECTED_TYPE));
       }
     }
     return $context->asValid();

@@ -31,7 +31,7 @@ class Email extends MessageHandler implements IConstraintAttribute
   {
     $result = filter_var($context->getValue(), FILTER_VALIDATE_EMAIL);
     if ($result === false) {
-      return $context->withFailure($this->template(self::NOT_EMAIL));
+      return $context->withFailure($this->useTemplate(self::NOT_EMAIL));
     }
 
     return $context->asValid();

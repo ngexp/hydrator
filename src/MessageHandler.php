@@ -5,8 +5,6 @@ declare(strict_types=1);
 
 namespace Ngexp\Hydrator;
 
-use JetBrains\PhpStorm\ArrayShape;
-
 abstract class MessageHandler
 {
   /**
@@ -31,12 +29,12 @@ abstract class MessageHandler
   /**
    * Return the messageTemplate that match the supplied key
    *
-   * @param string $code Each message type has a unique identifier.
+   * @param string $errorCode Each message type has a unique identifier.
    *
    * @return array<string, string>
    */
-  protected function template(string $code): array
+  protected function useTemplate(string $errorCode): array
   {
-    return [$code => $this->messageTemplates[$code]];
+    return [$errorCode => $this->messageTemplates[$errorCode]];
   }
 }

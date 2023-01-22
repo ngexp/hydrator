@@ -32,11 +32,11 @@ class CustomHydrator extends MessageHandler implements IHydratorAttribute
   public function hydrateValue(Context $context): Context
   {
     if (! class_exists($this->className)) {
-      return $context->withFailure($this->template(self::NOT_A_CLASS), ['className' => $this->className]);
+      return $context->withFailure($this->useTemplate(self::NOT_A_CLASS), ['className' => $this->className]);
     }
     $hydrator = new $this->className;
     if (! is_callable($hydrator)) {
-      return $context->withFailure($this->template(self::NOT_INVOKABLE), ['className' => $this->className]);
+      return $context->withFailure($this->useTemplate(self::NOT_INVOKABLE), ['className' => $this->className]);
     }
 
     return $hydrator($context);

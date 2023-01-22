@@ -41,19 +41,19 @@ class HashMap extends MessageHandler implements IHydratorAttribute
   {
     $value = $context->getValue();
     if (!is_array($value)) {
-      return $context->withFailure($this->template(self::NOT_ARRAY));
+      return $context->withFailure($this->useTemplate(self::NOT_ARRAY));
     }
 
     $result = [];
     foreach ($value as $item) {
       if (!is_array($item) || count($item) !== 2) {
-        return $context->withFailure($this->template(self::NOT_HASHMAP), ["keyName" => $this->keyName, "valueName" => $this->valueName]);
+        return $context->withFailure($this->useTemplate(self::NOT_HASHMAP), ["keyName" => $this->keyName, "valueName" => $this->valueName]);
       }
       if (!array_key_exists($this->keyName, $item)) {
-        return $context->withFailure($this->template(self::HASH_KEY_NAME), ["keyName" => $this->keyName]);
+        return $context->withFailure($this->useTemplate(self::HASH_KEY_NAME), ["keyName" => $this->keyName]);
       }
       if (!array_key_exists($this->valueName, $item)) {
-        return $context->withFailure($this->template(self::HASH_VALUE_NAME), ["valueName" => $this->valueName]);
+        return $context->withFailure($this->useTemplate(self::HASH_VALUE_NAME), ["valueName" => $this->valueName]);
       }
 
       $result[$item[$this->keyName]] = $item[$this->valueName];

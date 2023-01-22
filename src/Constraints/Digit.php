@@ -31,7 +31,7 @@ class Digit extends MessageHandler implements IConstraintAttribute
   {
     $result = ctype_digit($context->getValue());
     if (!$result) {
-      return $context->withFailure($this->template(self::NOT_DIGIT));
+      return $context->withFailure($this->useTemplate(self::NOT_DIGIT));
     }
 
     return $context->asValid();

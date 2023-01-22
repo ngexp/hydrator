@@ -34,10 +34,10 @@ class Pattern extends MessageHandler implements IConstraintAttribute
   {
     $value = $context->getValue();
     if (!is_string($value)) {
-      return $context->withFailure($this->template(self::NOT_A_STRING));
+      return $context->withFailure($this->useTemplate(self::NOT_A_STRING));
     }
     if (!preg_match($this->pattern, $value)) {
-      return $context->withFailure($this->template(self::NO_MATCH), ["pattern" => $this->pattern]);
+      return $context->withFailure($this->useTemplate(self::NO_MATCH), ["pattern" => $this->pattern]);
     }
 
     return $context->asValid();

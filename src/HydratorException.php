@@ -47,7 +47,7 @@ class HydratorException extends Exception
     if ($development) {
       $report = $this->getMessage() . $newLine;
       foreach ($this->failureMessages as $message) {
-        $code = $message->getCode();
+        $code = $message->getErrorCode();
         $bump =
           ($code != ClassType::CLASS_ERROR && $code !== ClassType::PROP_ERROR && $code !== ArrayOfClassType::PROP_ERROR) ? "\t" : "";
         $report .= $bump . $message->getMessage() . $newLine;

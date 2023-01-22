@@ -37,7 +37,7 @@ class ArrayOfClassType extends MessageHandler implements IHydratorAttribute
   {
     $value = $context->getValue();
     if (!is_array($value)) {
-      return $context->withFailure($this->template(self::INVALID_TYPE));
+      return $context->withFailure($this->useTemplate(self::INVALID_TYPE));
     }
 
     $resolvedProperties = $this->resolveProperties($this->classType);
@@ -49,7 +49,7 @@ class ArrayOfClassType extends MessageHandler implements IHydratorAttribute
       $classType->setResolvedProperties($resolvedProperties);
       $classContext = $classType->hydrateValue($classContext);
       if (!$classContext->isValid()) {
-        $context->withFailure($this->template(self::PROP_ERROR), ["classType" => $this->classType]);
+        $context->withFailure($this->useTemplate(self::PROP_ERROR), ["classType" => $this->classType]);
         $context->inheritFailState($classContext);
         return $context;
       }

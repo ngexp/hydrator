@@ -34,10 +34,10 @@ class Max extends MessageHandler implements IConstraintAttribute
   {
     $value = $context->getValue();
     if (!is_int($value) && !is_float($value)) {
-      return $context->withFailure($this->template(self::NOT_A_NUMBER));
+      return $context->withFailure($this->useTemplate(self::NOT_A_NUMBER));
     }
     if ($value > $this->max) {
-      return $context->withFailure($this->template(self::TOO_LARGE), ["max" => $this->max]);
+      return $context->withFailure($this->useTemplate(self::TOO_LARGE), ["max" => $this->max]);
     }
 
     return $context->asValid();

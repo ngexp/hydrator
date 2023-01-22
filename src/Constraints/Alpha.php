@@ -31,7 +31,7 @@ class Alpha extends MessageHandler implements IConstraintAttribute
   {
     $result = ctype_alpha($context->getValue());
     if (!$result) {
-      return $context->withFailure($this->template(self::NOT_ALPHA));
+      return $context->withFailure($this->useTemplate(self::NOT_ALPHA));
     }
 
     return $context->asValid();

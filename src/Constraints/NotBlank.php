@@ -33,12 +33,12 @@ class NotBlank extends MessageHandler implements IConstraintAttribute
   {
     $value = $context->getValue();
     if (!is_string($value)) {
-      return $context->withFailure($this->template(self::NOT_A_STRING));
+      return $context->withFailure($this->useTemplate(self::NOT_A_STRING));
     }
 
     $trimmed = trim($value);
     if (strlen($trimmed) === 0) {
-      return $context->withFailure($this->template(self::IS_BLANK));
+      return $context->withFailure($this->useTemplate(self::IS_BLANK));
     }
 
     return $context->asValid();

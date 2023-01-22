@@ -22,6 +22,9 @@ class CustomConstraint extends MessageHandler implements IConstraintAttribute
     self::NOT_INVOKABLE => "{className} does not have an invokable method.",
   ];
 
+  /**
+   * @param array<string, string> $messageTemplates
+   */
   public function __construct(private readonly string $className, array $messageTemplates = [])
   {
     $this->updateMessageTemplates($messageTemplates);
@@ -30,11 +33,11 @@ class CustomConstraint extends MessageHandler implements IConstraintAttribute
   public function constraint(Context $context): Context
   {
     if (! class_exists($this->className)) {
-      return $context->withFailure($this->template(self::NOT_A_CLASS), ['className' => $this->className]);
+      return $context->withFailure($this->useTemplate(self::NOT_A_CLASS), ['className' => $this->className]);
     }
     $constraint = new $this->className;
     if (! is_callable($constraint)) {
-      return $context->withFailure($this->template(self::NOT_INVOKABLE), ['className' => $this->className]);
+      return $context->withFailure($this->useTemplate(self::NOT_INVOKABLE), ['className' => $this->className]);
     }
 
     return $constraint($context);

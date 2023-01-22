@@ -33,10 +33,10 @@ class Positive extends MessageHandler implements IConstraintAttribute
   {
     $value = $context->getValue();
     if (!is_int($value) && !is_float($value)) {
-      return $context->withFailure($this->template(self::NOT_A_NUMBER));
+      return $context->withFailure($this->useTemplate(self::NOT_A_NUMBER));
     }
     if ($value <= 0) {
-      return $context->withFailure($this->template(self::NOT_POSITIVE));
+      return $context->withFailure($this->useTemplate(self::NOT_POSITIVE));
     }
 
     return $context->asValid();

@@ -31,7 +31,7 @@ class CoerceFloat extends MessageHandler implements IHydratorAttribute
   {
     $result = filter_var($context->getValue(), FILTER_VALIDATE_FLOAT);
     if ($result === false) {
-      return $context->withFailure($this->template(self::INVALID_TYPE));
+      return $context->withFailure($this->useTemplate(self::INVALID_TYPE));
     }
 
     return $context->withValue($result);

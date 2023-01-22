@@ -52,7 +52,7 @@ class AutoCast extends MessageHandler implements IHydratorAttribute
         return $context->asValid();
 
       default:
-        return $context->withFailure($this->template(self::AUTO_FAIL));
+        return $context->withFailure($this->useTemplate(self::AUTO_FAIL));
     }
   }
 }

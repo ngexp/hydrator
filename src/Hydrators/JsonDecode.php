@@ -36,7 +36,7 @@ class JsonDecode extends MessageHandler implements IHydratorAttribute
   {
     $value = $context->getValue();
     if (!is_string($value)) {
-      return $context->withFailure($this->template(self::INVALID_TYPE));
+      return $context->withFailure($this->useTemplate(self::INVALID_TYPE));
     }
 
     try {
@@ -51,10 +51,10 @@ class JsonDecode extends MessageHandler implements IHydratorAttribute
         return $context->withValue($json->getHydrationData());
       }
 
-      return $context->withFailure($this->template(self::INVALID_TYPE));
+      return $context->withFailure($this->useTemplate(self::INVALID_TYPE));
 
     } catch (HydratorException $e) {
-      return $context->withFailure($this->template(self::INVALID_JSON), ["message" => $e->getMessage()]);
+      return $context->withFailure($this->useTemplate(self::INVALID_JSON), ["message" => $e->getMessage()]);
     }
   }
 }

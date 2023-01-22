@@ -31,7 +31,7 @@ class Graph extends MessageHandler implements IConstraintAttribute
   {
     $result = ctype_graph($context->getValue());
     if (!$result) {
-      return $context->withFailure($this->template(self::NOT_GRAPH));
+      return $context->withFailure($this->useTemplate(self::NOT_GRAPH));
     }
 
     return $context->asValid();

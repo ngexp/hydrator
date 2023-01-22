@@ -40,18 +40,18 @@ class Between extends MessageHandler implements IConstraintAttribute
     switch ($type) {
       case Type::STRING:
         if (strlen($value) < $this->min || strlen($value) > $this->max) {
-          return $context->withFailure($this->template(self::NOT_BETWEEN));
+          return $context->withFailure($this->useTemplate(self::NOT_BETWEEN));
         }
         break;
 
       case Type::ARRAY:
         if (count($value) < $this->min || count($value) > $this->max) {
-          return $context->withFailure($this->template(self::NOT_BETWEEN));
+          return $context->withFailure($this->useTemplate(self::NOT_BETWEEN));
         }
         break;
 
       default:
-        return $context->withFailure($this->template(self::INVALID_TYPE));
+        return $context->withFailure($this->useTemplate(self::INVALID_TYPE));
     }
 
     return $context->asValid();
