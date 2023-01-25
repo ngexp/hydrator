@@ -9,6 +9,7 @@ use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\Hydrators\ClassType;
 use Ngexp\Hydrator\ResolvedProperty;
 use Ngexp\Hydrator\Traits\ReflectionUtils;
+use Ngexp\Hydrator\TypeOf;
 use PHPUnit\Framework\TestCase;
 use ReflectionNamedType;
 
@@ -22,7 +23,9 @@ abstract class AttributeTestCase extends TestCase
     $reflectionNamedTypeStub
       ->method("getName")
       ->willReturn($expectedType !== "" ? $expectedType : $this->getVariableType($value));
-    $property = new ResolvedProperty("", $reflectionNamedTypeStub, ResolvedProperty::SET_BY_PROPERTY, false, []);
+    $property = new ResolvedProperty(
+      "", $reflectionNamedTypeStub, TypeOf::NullType, ResolvedProperty::SET_BY_PROPERTY, false, []
+    );
     $classTypeStub = $this->createStub(ClassType::class);
     return new Context($property, $value, $classTypeStub);
   }

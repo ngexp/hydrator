@@ -176,10 +176,8 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
       return $context->asValid();
     }
 
-    if ($expectedType !== Type::MIXED && $actualType !== $expectedType) {
-
+    if (!$context->getProperty()->hasType($actualType)) {
         return $context->withError(ErrorCode::EXPECTED_TYPE);
-
     }
     return $context->asValid();
   }

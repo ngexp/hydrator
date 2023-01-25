@@ -6,54 +6,46 @@ namespace Ngexp\Hydrator;
 
 use JetBrains\PhpStorm\ExpectedValues;
 use JetBrains\PhpStorm\Pure;
-use ReflectionClass;
 use ReflectionEnum;
+use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionType;
+use ReflectionUnionType;
+use RuntimeException;
 
 class ResolvedProperty
 {
   const SET_BY_PROPERTY = 0;
   const SET_BY_METHOD = 1;
 
-  private bool $isEnum = false;
-  private bool $isClass = false;
-  private string $type = "";
+  private string $typeName;
+
+  /** @var array<int|string, mixed> */
+  private array $enumCases = [];
 
   /**
    * @param string                                   $name
    * @param \ReflectionType|null                     $reflectionType
+   * @param \Ngexp\Hydrator\TypeOf                   $typeOf
    * @param int                                      $setBy
    * @param bool                                     $isOptional
    * @param array<int, \ReflectionAttribute<object>> $attributes
+   *
+   * @throws \ReflectionException
    */
   public function __construct(
     private readonly string          $name,
     private readonly ?ReflectionType $reflectionType,
+    private readonly TypeOf          $typeOf,
     #[ExpectedValues([self::SET_BY_PROPERTY, self::SET_BY_METHOD])]
     private readonly int             $setBy,
     private bool                     $isOptional,
     private array                    $attributes
   )
   {
-    $this->typeCheck($this->reflectionType);
-  }
-
-  public function typeCheck(ReflectionType $reflectionType): void
-  {
-    if ($reflectionType instanceof ReflectionNamedType) {
-      $this->type = $reflectionType->getName();
-    } else {
-      $this->type = "mixed";
-    }
-
-    if (class_exists($this->type)) {
-      $rc = new ReflectionClass($this->type);
-      if ($rc->isEnum()) {
-        $this->isEnum = true;
-      } else {
-        $this->isClass = true;
-      }
+    $this->typeName = $this->reflectTypeName();
+    if ($this->typeOf === TypeOf::EnumType) {
+      $this->enumCases = $this->reflectEnumCases($this->reflectionType);
     }
   }
 
@@ -61,18 +53,29 @@ class ResolvedProperty
    * @param string $name
    *
    * @return mixed
-   * @throws \ReflectionException
    */
   public function resolveEnumCase(string $name): mixed
   {
-    $enum = new ReflectionEnum($this->getType());
-    foreach ($enum->getCases() as $case) {
-      $caseName = $case->getName();
-      if ($name === $caseName) {
-        return $case->getValue();
-      }
+    if (isset($this->enumCases[$name])) {
+      return $this->enumCases[$name];
     }
     return null;
+  }
+
+  public function hasType(string $valueType): bool
+  {
+    if ($this->reflectionType instanceof ReflectionNamedType) {
+      if ($valueType === $this->reflectionType->getName()) {
+        return true;
+      }
+    } else if ($this->reflectionType instanceof ReflectionUnionType) {
+      foreach ($this->reflectionType->getTypes() as $type) {
+        if ($type === $type->getName()) {
+          return true;
+        }
+      }
+    }
+    return false;
   }
 
   public function getName(): string
@@ -92,7 +95,7 @@ class ResolvedProperty
   #[Pure]
   public function getType(): string
   {
-    return $this->type;
+    return $this->typeName;
   }
 
   public function allowsNull(): bool
@@ -112,12 +115,12 @@ class ResolvedProperty
 
   public function isClass(): bool
   {
-    return $this->isClass;
+    return $this->typeOf === TypeOf::ClassType;
   }
 
   public function isEnum(): bool
   {
-    return $this->isEnum;
+    return $this->typeOf === TypeOf::EnumType;
   }
 
   public function isOptional(): bool
@@ -139,5 +142,51 @@ class ResolvedProperty
   public function addAttributes(array $attributes): void
   {
     $this->attributes = array_merge($this->attributes, $attributes);
+  }
+
+  private function reflectTypeName(): string
+  {
+    if (!$this->reflectionType) {
+      return Type::MIXED;
+    }
+
+    if ($this->reflectionType instanceof ReflectionNamedType) {
+      return $this->reflectionType->getName();
+    } else if ($this->reflectionType instanceof ReflectionUnionType) {
+      $unionTypes = [];
+      foreach ($this->reflectionType->getTypes() as $type) {
+        $unionTypes[] = $type->getName();
+      }
+      return implode("|", $unionTypes);
+    } else if ($this->reflectionType instanceof ReflectionIntersectionType) {
+      $unionTypes = [];
+      foreach ($this->reflectionType->getTypes() as $type) {
+        if ($type instanceof ReflectionNamedType) {
+          $unionTypes[] = $type->getName();
+        }
+      }
+      return implode("&", $unionTypes);
+    }
+
+    // Should not happen.
+    throw new RuntimeException("Ngexp\\Hydrator internal error");
+  }
+
+  /**
+   * @param \ReflectionType|null $reflectionType
+   *
+   * @return array<int|string, mixed>
+   * @throws \ReflectionException
+   */
+  public function reflectEnumCases(?ReflectionType $reflectionType): array
+  {
+    $enumCases = [];
+    if ($reflectionType instanceof ReflectionNamedType) {
+      $enum = new ReflectionEnum($this->getType());
+      foreach ($enum->getCases() as $case) {
+        $enumCases[$case->getName()] = $case->getValue();
+      }
+    }
+    return $enumCases;
   }
 }
