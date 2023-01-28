@@ -49,7 +49,7 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
       return $context->withError(ErrorCode::INVALID_TYPE, ['type' => $this->className]);
     }
 
-    foreach ($this->resolvedProperties->getProperties() as $property) {
+    foreach ($this->resolvedProperties as $property) {
       $propertyName = $property->getPropertyName();
       $value = $hydrationData[$propertyName] ?? null;
       $propContext = new Context($property, $value, $this);

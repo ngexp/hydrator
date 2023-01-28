@@ -44,7 +44,6 @@ trait Reflection
           $optional = count($method->getAttributes(Optional::class)) === 1;
 
           $resolvedProperties->add(
-            $methodName,
             new ResolvedProperty(
               $methodName, $type, $typeOf, ResolvedProperty::SET_BY_METHOD, $optional, $method->getAttributes()
             )
@@ -53,7 +52,7 @@ trait Reflection
       }
 
       // A private property and a public set method that share the same name also shares the same attributes.
-      foreach ($resolvedProperties->getProperties() as $resolvedProperty) {
+      foreach ($resolvedProperties as $resolvedProperty) {
         $propertyName = $resolvedProperty->getPropertyName();
         $property = $reflectionClass->getProperty($propertyName);
         // Properties that has a public setter method can not also be public.
@@ -74,7 +73,6 @@ trait Reflection
         $typeOf = $this->getTypeOfType($type);
 
         $resolvedProperties->add(
-          $property->getName(),
           new ResolvedProperty(
             $property->getName(), $type, $typeOf, ResolvedProperty::SET_BY_PROPERTY, $optional, $property->getAttributes()
           )
@@ -97,14 +95,14 @@ trait Reflection
     }
 
     if ($reflectionType instanceof ReflectionNamedType) {
-       if (class_exists($reflectionType->getName())) {
-         $reflectionClass = new ReflectionClass($reflectionType->getName());
-         if ($reflectionClass->isEnum()) {
-           return TypeOf::EnumType;
-         }
-         return TypeOf::ClassType;
-       }
-       return TypeOf::ScalarType;
+      if (class_exists($reflectionType->getName())) {
+        $reflectionClass = new ReflectionClass($reflectionType->getName());
+        if ($reflectionClass->isEnum()) {
+          return TypeOf::EnumType;
+        }
+        return TypeOf::ClassType;
+      }
+      return TypeOf::ScalarType;
     } else if ($reflectionType instanceof ReflectionUnionType) {
       return TypeOf::UnionType;
     } else if ($reflectionType instanceof ReflectionIntersectionType) {
