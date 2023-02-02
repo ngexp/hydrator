@@ -33,6 +33,7 @@ class Between implements IConstraintAttribute
 
     switch ($type) {
       case Type::STRING:
+        /** @phpstan-ignore-next-line */
         if (strlen($value) < $this->min || strlen($value) > $this->max) {
           if ($this->message) {
             return $context->withErrorMessage($this->message);
@@ -42,6 +43,7 @@ class Between implements IConstraintAttribute
         break;
 
       case Type::ARRAY:
+        /** @phpstan-ignore-next-line */
         if (count($value) < $this->min || count($value) > $this->max) {
           if ($this->message) {
             return $context->withErrorMessage($this->message);

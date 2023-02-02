@@ -129,7 +129,7 @@ class ResolvedProperty
   }
 
   /**
-   * @return array<int, mixed>
+   * @return array<int, \ReflectionAttribute<object>>
    */
   public function getAttributes(): array
   {

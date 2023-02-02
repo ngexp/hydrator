@@ -17,6 +17,9 @@ class JsonAdapter extends HydrationAdapter
    */
   public function getHydrationData(): array
   {
+    if (! is_string($this->hydrationData)) {
+      throw new \RuntimeException("JsonAdapter expects string");
+    }
     $hydrationData = json_decode($this->hydrationData, true, 512, JSON_THROW_ON_ERROR);
 
     return $this->prepareData($hydrationData);

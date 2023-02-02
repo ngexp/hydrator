@@ -60,6 +60,7 @@ class ErrorMessageAggregate implements IteratorAggregate
   public function getMessage(Error $error): string
   {
     $context = $error->getContext();
+    /** @var array<string, mixed> $parameters */
     $parameters = array_merge(
       $error->getParameters(),
       [
@@ -74,6 +75,9 @@ class ErrorMessageAggregate implements IteratorAggregate
     // Hack to be able to set arbitrary custom messages.
     if ($error->getCode() === Error::INTERNAL_CUSTOM_MESSAGE) {
       $message = $error->getParameters()["internalMessage"];
+      if (!is_string($message)) {
+        throw new RuntimeException("Ngexp\\Hydrator: Internal message not a string");
+      }
     } else {
       $message = $this->findErrorMessage($error->getCode(), $this->errorMessages);
     }

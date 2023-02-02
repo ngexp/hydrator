@@ -168,12 +168,15 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
     }
 
     if ($context->getProperty()->isEnum()) {
-      $value = $context->getProperty()->resolveEnumCase($context->getValue());
-      if (!$value) {
-        return $context->withError(ErrorCode::ENUM);
+      $contextValue = $context->getValue();
+      if (is_string($contextValue)) {
+        $value = $context->getProperty()->resolveEnumCase($contextValue);
+        if (!$value) {
+          return $context->withError(ErrorCode::ENUM);
+        }
+        $context->setValue($value);
+        return $context->asValid();
       }
-      $context->setValue($value);
-      return $context->asValid();
     }
 
     if (!$context->getProperty()->hasType($actualType)) {

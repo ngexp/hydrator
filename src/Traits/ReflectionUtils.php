@@ -23,6 +23,7 @@ trait ReflectionUtils
       "double" => Type::FLOAT,
       "string" => Type::STRING,
       "array" => Type::ARRAY,
+      /** @phpstan-ignore-next-line */
       "object" => get_class($variable) ?: Type::OBJECT,
       "NULL" => Type::NULL,
       default => throw new RuntimeException("Unknown type"),

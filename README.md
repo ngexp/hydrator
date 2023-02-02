@@ -1,4 +1,4 @@
-[![PHPstan](https://img.shields.io/badge/PHPStan-level%208-brightgreen.svg)](https://phpstan.org/)
+[![PHPstan](https://img.shields.io/badge/PHPStan-level%209-brightgreen.svg)](https://phpstan.org/)
 [![PHP Composer](https://github.com/ngexp/hydrator/actions/workflows/php.yml/badge.svg)](https://github.com/ngexp/hydrator/actions/workflows/php.yml)
 
 # Ngexp/hydrator

@@ -21,8 +21,13 @@ use RuntimeException;
 
 trait Reflection
 {
+  /**
+   * @param class-string $classInstance
+   *
+   * @return \Ngexp\Hydrator\ResolvedProperties
+   */
   #[ArrayShape([ResolvedProperty::class])]
-  function resolveProperties(mixed $classInstance): ResolvedProperties
+  function resolveProperties(string $classInstance): ResolvedProperties
   {
     try {
       $reflectionClass = new ReflectionClass($classInstance);

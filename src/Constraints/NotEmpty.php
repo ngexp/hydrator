@@ -8,6 +8,7 @@ use Attribute;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\IConstraintAttribute;
+use Ngexp\Hydrator\Type;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class NotEmpty implements IConstraintAttribute
@@ -24,8 +25,10 @@ class NotEmpty implements IConstraintAttribute
   {
     $value = $context->getValue();
     $result = match($context->getValueType()) {
-      "string" => strlen($value) > 0,
-      "array" => count($value) > 0,
+      /** @phpstan-ignore-next-line */
+      Type::STRING => strlen($value) > 0,
+      /** @phpstan-ignore-next-line */
+      Type::ARRAY => count($value) > 0,
       default => false
     };
     if (!$result) {

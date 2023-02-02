@@ -12,7 +12,7 @@ class Error
   /**
    * @param \Ngexp\Hydrator\Context $context
    * @param string                  $code
-   * @param array<string, string>   $parameters
+   * @param array<string, mixed>   $parameters
    */
   public function __construct(
     private readonly Context $context,
@@ -33,7 +33,7 @@ class Error
   }
 
   /**
-   * @return array<string, string>
+   * @return array<string, mixed>
    */
   public function getParameters(): array
   {

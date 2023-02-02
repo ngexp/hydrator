@@ -44,6 +44,11 @@ class Hydrator
       );
     }
 
-    return $context->getValue();
+    $object = $context->getValue();
+    if (is_object($object)) {
+      return $object;
+    }
+
+    throw new RuntimeException("Hydrator::Hydrate internal error, context did not return object.");
   }
 }
