@@ -4,8 +4,7 @@ declare(strict_types = 1);
 
 namespace Ngexp\Hydrator\Adapters;
 
-use Ngexp\Hydrator\HydratorException;
-use JsonException;
+use Ngexp\Hydrator\RuntimeHydrationException;
 
 class JsonAdapter extends HydrationAdapter
 {
@@ -18,7 +17,7 @@ class JsonAdapter extends HydrationAdapter
   public function getHydrationData(): array
   {
     if (! is_string($this->hydrationData)) {
-      throw new \RuntimeException("JsonAdapter expects string");
+      throw new RuntimeHydrationException("JsonAdapter expects string");
     }
     $hydrationData = json_decode($this->hydrationData, true, 512, JSON_THROW_ON_ERROR);
 

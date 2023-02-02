@@ -12,11 +12,11 @@ use Ngexp\Hydrator\IResolvedAttribute;
 use Ngexp\Hydrator\IHydratorAttribute;
 use Ngexp\Hydrator\ResolvedProperties;
 use Ngexp\Hydrator\ResolvedProperty;
+use Ngexp\Hydrator\RuntimeHydrationException;
 use Ngexp\Hydrator\Traits\Reflection;
 use Ngexp\Hydrator\Type;
 use ReflectionClass;
 use ReflectionException;
-use RuntimeException;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class ClassType implements IHydratorAttribute, IResolvedAttribute
@@ -109,7 +109,7 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
       $reflectionClass = new ReflectionClass($className);
       return $reflectionClass->newInstanceWithoutConstructor();
     } catch (ReflectionException $e) {
-      throw new RuntimeException($e->getMessage());
+      throw new RuntimeHydrationException($e->getMessage());
     }
   }
 

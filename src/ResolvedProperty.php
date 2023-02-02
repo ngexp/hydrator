@@ -11,7 +11,6 @@ use ReflectionIntersectionType;
 use ReflectionNamedType;
 use ReflectionType;
 use ReflectionUnionType;
-use RuntimeException;
 
 class ResolvedProperty
 {
@@ -169,7 +168,7 @@ class ResolvedProperty
     }
 
     // Should not happen.
-    throw new RuntimeException("Ngexp\\Hydrator internal error");
+    throw new RuntimeHydrationException("Unknown reflection type");
   }
 
   /**

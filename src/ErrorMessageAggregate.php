@@ -7,7 +7,6 @@ namespace Ngexp\Hydrator;
 
 use ArrayIterator;
 use Ngexp\Hydrator\Traits\StringFormatting;
-use RuntimeException;
 use IteratorAggregate;
 use Traversable;
 
@@ -34,7 +33,7 @@ class ErrorMessageAggregate implements IteratorAggregate
   public function first(): string
   {
     if (count($this->errorMessages) === 0) {
-      throw new RuntimeException("Array of messages is empty");
+      throw new RuntimeHydrationException("ErrorMessageAggregate called when empty");
     }
     $error = $this->errors->first();
 
@@ -76,7 +75,7 @@ class ErrorMessageAggregate implements IteratorAggregate
     if ($error->getCode() === Error::INTERNAL_CUSTOM_MESSAGE) {
       $message = $error->getParameters()["internalMessage"];
       if (!is_string($message)) {
-        throw new RuntimeException("Ngexp\\Hydrator: Internal message not a string");
+        throw new RuntimeHydrationException("Internal message is not a string");
       }
     } else {
       $message = $this->findErrorMessage($error->getCode(), $this->errorMessages);
@@ -109,7 +108,7 @@ class ErrorMessageAggregate implements IteratorAggregate
   private function findErrorMessage(string $code, array $errorMessages): string
   {
     if (!array_key_exists($code, $errorMessages)) {
-      throw new RuntimeException("Can not find error message for code: $code");
+      throw new RuntimeHydrationException("Can not find error message for code: $code");
     }
     return $errorMessages[$code];
   }

@@ -8,7 +8,6 @@ namespace Ngexp\Hydrator;
 use Ngexp\Hydrator\Hydrators\ClassType;
 use Ngexp\Hydrator\Traits\ReflectionUtils;
 use Ngexp\Hydrator\Traits\StringFormatting;
-use RuntimeException;
 
 class Context
 {
@@ -101,7 +100,7 @@ class Context
     if (class_exists($className)) {
       return $className;
     }
-    throw new RuntimeException("Trying to get class name from a non class type");
+    throw new RuntimeHydrationException("Trying to get class name from a non class type");
   }
 
   public function getValueType(): string

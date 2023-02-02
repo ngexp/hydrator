@@ -8,6 +8,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use Ngexp\Hydrator\Constraints\Optional;
 use Ngexp\Hydrator\ResolvedProperties;
 use Ngexp\Hydrator\ResolvedProperty;
+use Ngexp\Hydrator\RuntimeHydrationException;
 use Ngexp\Hydrator\TypeOf;
 use ReflectionClass;
 use ReflectionException;
@@ -17,7 +18,6 @@ use ReflectionNamedType;
 use ReflectionProperty;
 use ReflectionType;
 use ReflectionUnionType;
-use RuntimeException;
 
 trait Reflection
 {
@@ -86,7 +86,7 @@ trait Reflection
 
       return $resolvedProperties;
     } catch (ReflectionException $e) {
-      throw new RuntimeException($e->getMessage());
+      throw new RuntimeHydrationException($e->getMessage());
     }
   }
 
@@ -114,7 +114,7 @@ trait Reflection
       return TypeOf::IntersectionType;
     }
 
-    throw new RuntimeException("Ngexp\\Hydrator internal error");
+    throw new RuntimeHydrationException("Unknown reflection type");
   }
 
   /**

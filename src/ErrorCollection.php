@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Ngexp\Hydrator;
 use Countable;
 use Iterator;
-use RuntimeException;
 
 /**
  * @implements  Iterator<int, \Ngexp\Hydrator\Error>
@@ -31,7 +30,7 @@ class ErrorCollection implements Iterator, Countable
   public function first(): Error
   {
     if (count($this->errors) === 0) {
-      throw new RuntimeException("Has no errors");
+      throw new RuntimeHydrationException("ErrorCollection called when empty");
     }
     return $this->errors[0];
   }

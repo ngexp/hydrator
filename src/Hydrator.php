@@ -7,7 +7,6 @@ namespace Ngexp\Hydrator;
 use Ngexp\Hydrator\Adapters\HydrationAdapter;
 use Ngexp\Hydrator\Hydrators\ClassType;
 use Ngexp\Hydrator\Traits\Reflection;
-use RuntimeException;
 
 class Hydrator
 {
@@ -22,7 +21,7 @@ class Hydrator
   public function __construct(private readonly string $className, private readonly array $customErrorMessages = [])
   {
     if (!class_exists($className)) {
-      throw new RuntimeException("Class $className does not exist");
+      throw new RuntimeHydrationException("Class $className does not exist");
     }
 
     $this->resolvedProperties = $this->resolveProperties($className);
@@ -49,6 +48,6 @@ class Hydrator
       return $object;
     }
 
-    throw new RuntimeException("Hydrator::Hydrate internal error, context did not return object.");
+    throw new RuntimeHydrationException("Hydrator::Hydrate internal error, context did not return object.");
   }
 }
