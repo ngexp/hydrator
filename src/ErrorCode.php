@@ -17,6 +17,7 @@ class ErrorCode
  const CLASS_ERROR = "CLASS_ERROR";
  const CLASS_NAME = "CLASS_NAME";
  const COERCE = "COERCE";
+ const DATE = "DATE";
  const DIGIT = "DIGIT";
  const EMAIL = "EMAIL";
  const EMPTY = "EMPTY";

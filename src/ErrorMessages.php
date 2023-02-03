@@ -15,6 +15,7 @@ return [
   ErrorCode::CLASS_ERROR => "Error in the instance of {classType}.",
   ErrorCode::CLASS_NAME => "{className} does not exist.",
   ErrorCode::COERCE => "{className}::{propertyName} cannot be coerced to {type}, got {valueType} with value {value}.",
+  ErrorCode::DATE => "{className}::{propertyName} dates must have the following date format '{format}', got {value}",
   ErrorCode::DIGIT => "{className}::{propertyName} must contain a valid numeric string value, got {value}.",
   ErrorCode::EMAIL => "{className}::{propertyName} must contain a valid email address as a string value, got {value}.",
   ErrorCode::EMPTY => "{className}::{propertyName} cannot be empty, got {value}.",

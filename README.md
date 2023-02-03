@@ -131,25 +131,26 @@ attributes that tells how it should be hydrated.
 ### Constraint attributes
 Validation attributes validate and constrain input values.
 
-| Attribute        | Description                                           | Arguments                    | Error codes it can return      |
-|:-----------------|:------------------------------------------------------|:-----------------------------|--------------------------------|
-| Alnum            | String must only contain alpha numeric characters     | errorCode, message           | ALNUM                          |
-| Alpha            | String must only contain alphabetic characters        | errorCode, message           | ALPHA                          |
-| Between          | String or array must be between min and max size      | min, max, errorCode, message | INVALID_TYPE, BETWEEN          |
-| CustomConstraint | Custom Constraint, invoked from a class               | className                    | CLASS_NAME, INVOKABLE          |
-| Digit            | String must only contain numbers                      | errorCode, message           | DIGIT                          |
-| Email            | String must be an email addresses                     | errorCode, message           | EMAIL                          |
-| Graph            | String must only contain visibly printable characters | errorCode, message           | GRAPH                          |
-| Max              | Number must be less than or equal to max              | max, errorCode               | INVALID_TYPE, TOO_LARGE        |
-| Min              | Number must be greater than or equal to min           | min, errorCode               | INVALID_TYPE, TOO_SMALL        |
-| Negative         | Number must be less than 0                            | errorCode, message           | INVALID_TYPE, NEGATIVE         |
-| NegativeOrZero   | Number must be less than or equal to 0                | errorCode, message           | INVALID_TYPE, NEGATIVE_OR_ZERO |
-| NotBlank         | String can not be empty or contain white spaces only  | errorCode, message           | BLANK, STRING                  | 
-| NotEmpty         | String or array can not be of size 0                  | errorCode, message           | EMPTY                          |
-| Optional         | Data for property is optional                         |                              |                                |
-| Pattern          | String must match regex pattern                       | pattern, errorCode           | STRING, NO_MATCH               |
-| Positive         | Number must be greater than 0                         | errorCode, message           | INVALID_TYPE, POSITIVE         |
-| PositiveOrZero   | Number must be greater than or equal to 0             | errorCode, message           | INVALID_TYPE, POSITIVE_OR_ZERO | 
+| Attribute        | Description                                           | Arguments                      | Error codes it can return      |
+|:-----------------|:------------------------------------------------------|:-------------------------------|--------------------------------|
+| Alnum            | String must only contain alpha numeric characters     | errorCode, message             | ALNUM                          |
+| Alpha            | String must only contain alphabetic characters        | errorCode, message             | ALPHA                          |
+| Between          | String or array must be between min and max size      | min, max, errorCode, message   | INVALID_TYPE, BETWEEN          |
+| CustomConstraint | Custom Constraint, invoked from a class               | className                      | CLASS_NAME, INVOKABLE          |
+| Digit            | String must only contain numbers                      | errorCode, message             | DIGIT                          |
+| Email            | String must be an email addresses                     | errorCode, message             | EMAIL                          |
+| Graph            | String must only contain visibly printable characters | errorCode, message             | GRAPH                          |
+| Max              | Number must be less than or equal to max              | max, errorCode                 | INVALID_TYPE, LARGE            |
+| Min              | Number must be greater than or equal to min           | min, errorCode                 | INVALID_TYPE, SMALL            |
+| Moment           | Date validation using standard php date format        | dateFormat, errorCode, message | INVALID_TYPE, DATE             |
+| Negative         | Number must be less than 0                            | errorCode, message             | INVALID_TYPE, NEGATIVE         |
+| NegativeOrZero   | Number must be less than or equal to 0                | errorCode, message             | INVALID_TYPE, NEGATIVE_OR_ZERO |
+| NotBlank         | String can not be empty or contain white spaces only  | errorCode, message             | BLANK, STRING                  | 
+| NotEmpty         | String or array can not be of size 0                  | errorCode, message             | EMPTY                          |
+| Optional         | Data for property is optional                         |                                |                                |
+| Pattern          | String must match regex pattern                       | pattern, errorCode             | STRING, MATCH                  |
+| Positive         | Number must be greater than 0                         | errorCode, message             | INVALID_TYPE, POSITIVE         |
+| PositiveOrZero   | Number must be greater than or equal to 0             | errorCode, message             | INVALID_TYPE, POSITIVE_OR_ZERO | 
 
 ```php
 #[Email(message="Custom error message", errorCode="unique_error_code")]
