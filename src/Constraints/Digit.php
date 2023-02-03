@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Ngexp\Hydrator\Constraints;
 
@@ -13,10 +13,11 @@ use Ngexp\Hydrator\Context;
 class Digit implements IHydratorAttribute
 {
   /**
-   * @param string|null $message Custom error message
-   * @param string|null $errorCode Custom error code, will be ignored if message is not null.
+   * @param string|null $message   Custom error message
+   * @param string      $errorCode Custom error code, will be ignored if message is not null.
    */
-  public function __construct(private readonly ?string $message = null, private readonly ?string $errorCode = null)
+  public function __construct(private readonly ?string $message = null,
+                              private readonly string  $errorCode = ErrorCode::DIGIT)
   {
   }
 
@@ -27,7 +28,7 @@ class Digit implements IHydratorAttribute
       if ($this->message) {
         return $context->withErrorMessage($this->message);
       }
-      return $context->withError($this->errorCode ?: ErrorCode::DIGIT);
+      return $context->withError($this->errorCode);
     }
 
     return $context->asValid();

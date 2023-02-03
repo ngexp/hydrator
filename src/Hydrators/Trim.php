@@ -12,7 +12,10 @@ use Ngexp\Hydrator\IHydratorAttribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class Trim implements IHydratorAttribute
 {
-  public function __construct()
+  /**
+   * @param string $characters Characters that should be trimmed.
+   */
+  public function __construct(private readonly string $characters = " \t\n\r\0\x0B")
   {
   }
 
@@ -23,6 +26,6 @@ class Trim implements IHydratorAttribute
       return $context->withError(ErrorCode::STRING);
     }
 
-    return $context->withValue(trim($value));
+    return $context->withValue(trim($value, $this->characters));
   }
 }

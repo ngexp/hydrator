@@ -13,10 +13,6 @@ use Ngexp\Hydrator\Type;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class CoerceBool implements IHydratorAttribute
 {
-  public function __construct()
-  {
-  }
-
   public function process(Context $context): Context
   {
     $result = filter_var($context->getValue(), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);

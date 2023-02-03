@@ -15,11 +15,11 @@ class Min implements IHydratorAttribute
  /**
    * @param int         $min
    * @param string|null $message Custom error message
-   * @param string|null $errorCode Custom error code, will be ignored if message is not null.
+   * @param string $errorCode Custom error code, will be ignored if message is not null.
    */
   public function __construct(private readonly int $min = 0,
                               private readonly ?string $message = null,
-                              private readonly ?string $errorCode = null)
+                              private readonly string $errorCode = ErrorCode::SMALL)
   {
   }
 
@@ -33,7 +33,7 @@ class Min implements IHydratorAttribute
       if ($this->message) {
         return $context->withErrorMessage($this->message, ["min" => $this->min]);
       }
-      return $context->withError($this->errorCode ?: ErrorCode::SMALL, ["min" => $this->min]);
+      return $context->withError($this->errorCode, ["min" => $this->min]);
     }
 
     return $context->asValid();

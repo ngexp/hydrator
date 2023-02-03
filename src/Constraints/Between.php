@@ -16,13 +16,13 @@ class Between implements IHydratorAttribute
   /**
    * @param int         $min
    * @param int         $max
-   * @param string|null $message Custom error message
-   * @param string|null $errorCode Custom error code, will be ignored if message is not null.
+   * @param string|null $message   Custom error message
+   * @param string      $errorCode Custom error code, will be ignored if message is not null.
    */
   public function __construct(public int               $min = 0,
                               public int               $max = PHP_INT_MAX,
                               private readonly ?string $message = null,
-                              private readonly ?string $errorCode = null)
+                              private readonly string  $errorCode = ErrorCode::BETWEEN)
   {
   }
 

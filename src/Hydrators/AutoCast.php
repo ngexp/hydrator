@@ -13,10 +13,6 @@ use Ngexp\Hydrator\Type;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class AutoCast implements IHydratorAttribute
 {
-  public function __construct()
-  {
-  }
-
   public function process(Context $context): Context
   {
     $expectedType = $context->getExpectedType();

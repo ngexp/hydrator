@@ -14,9 +14,10 @@ class NegativeOrZero implements IHydratorAttribute
 {
   /**
    * @param string|null $message Custom error message
-   * @param string|null $errorCode Custom error code, will be ignored if message is not null.
+   * @param string $errorCode Custom error code, will be ignored if message is not null.
    */
-  public function __construct(private readonly ?string $message = null, private readonly ?string $errorCode = null)
+  public function __construct(private readonly ?string $message = null,
+                              private readonly string $errorCode = ErrorCode::NEGATIVE)
   {
   }
 
@@ -30,7 +31,7 @@ class NegativeOrZero implements IHydratorAttribute
       if ($this->message) {
         return $context->withErrorMessage($this->message);
       }
-      return $context->withError($this->errorCode ?: ErrorCode::NEGATIVE_OR_ZERO);
+      return $context->withError($this->errorCode);
     }
 
     return $context->asValid();

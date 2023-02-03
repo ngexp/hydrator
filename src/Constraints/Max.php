@@ -14,12 +14,12 @@ class Max implements IHydratorAttribute
 {
   /**
    * @param int         $max
-   * @param string|null $message Custom error message
-   * @param string|null $errorCode Custom error code, will be ignored if message is not null.
+   * @param string|null $message   Custom error message
+   * @param string      $errorCode Custom error code, will be ignored if message is not null.
    */
-  public function __construct(private readonly int $max = 0,
+  public function __construct(private readonly int     $max = 0,
                               private readonly ?string $message = null,
-                              private readonly ?string $errorCode = null)
+                              private readonly string  $errorCode = ErrorCode::LARGE)
   {
   }
 
@@ -33,7 +33,7 @@ class Max implements IHydratorAttribute
       if ($this->message) {
         return $context->withErrorMessage($this->message, ["max" => $this->max]);
       }
-      return $context->withError($this->errorCode ?: ErrorCode::LARGE, ["max" => $this->max]);
+      return $context->withError($this->errorCode, ["max" => $this->max]);
     }
 
     return $context->asValid();

@@ -13,7 +13,7 @@ use Ngexp\Hydrator\IHydratorAttribute;
 class LeftTrim implements IHydratorAttribute
 {
   /**
-   * @param string                $characters
+   * @param string $characters Characters that should be trimmed.
    */
   public function __construct(private readonly string $characters = " \t\n\r\0\x0B")
   {

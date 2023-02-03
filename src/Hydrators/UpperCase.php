@@ -12,10 +12,6 @@ use Ngexp\Hydrator\IHydratorAttribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class UpperCase implements IHydratorAttribute
 {
-  public function __construct()
-  {
-  }
-
   public function process(Context $context): Context
   {
     $value = $context->getValue();

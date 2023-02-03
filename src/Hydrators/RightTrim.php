@@ -12,6 +12,9 @@ use Ngexp\Hydrator\IHydratorAttribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class RightTrim implements IHydratorAttribute
 {
+  /**
+   * @param string $characters Characters that should be trimmed.
+   */
   public function __construct(private readonly string $characters = " \t\n\r\0\x0B")
   {
   }

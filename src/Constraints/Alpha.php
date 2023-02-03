@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Ngexp\Hydrator\Constraints;
 
@@ -12,13 +12,12 @@ use Ngexp\Hydrator\Context;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class Alpha implements IHydratorAttribute
 {
-  const NOT_ALPHA = "Alpha::NOT_ALPHA";
-
   /**
-   * @param string|null $message Custom error message
-   * @param string|null $errorCode Custom error code, will be ignored if message is not null.
+   * @param string|null $message   Custom error message
+   * @param string      $errorCode Custom error code, will be ignored if message is not null.
    */
-  public function __construct(private readonly ?string $message = null, private readonly ?string $errorCode = null)
+  public function __construct(private readonly ?string $message = null,
+                              private readonly string  $errorCode = ErrorCode::ALPHA)
   {
   }
 
