@@ -74,6 +74,10 @@ class ResolvedProperty
         }
       }
     }
+    // Last resort, check it the type is of type mixed
+    if ($this->getType() === Type::MIXED) {
+      return true;
+    }
     return false;
   }
 

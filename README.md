@@ -3,21 +3,20 @@
 
 # Ngexp/hydrator
 
-Minimum supported php version is 8.1
+## Overview
 
-Hydrating data means populating an object with data from a source, such as an array or JSON. The process of hydration typically involves mapping the data from the source to the properties of the object and transforming or casting the data to the correct data type, as specified by the object's property type.
+Ngexp/hydrator is a library that allows you to hydrate data into an object. Hydration is the process of populating an
+object with data from a source such as an array or JSON. The library makes use of attributes to add additional behavior
+to the process, such as converting data from one type to another, validating data, and more.
 
-Attributes provide a way to add additional behavior to the process of hydration, such as converting the data from one type to another, validating the data to ensure it meets certain criteria, and more. The use of attributes makes it possible to have a flexible and customizable process for hydration.
+The library requires PHP 8.1 or higher and supports strict type checking while still allowing mixed data types. Some of its
+features include:
 
-Some features offered by this library include:
-
-✅ &nbsp;Many attributes to modify and validate data  
-✅ &nbsp;Reusable hydration for the same class type using memoized reflection for speed  
-✅ &nbsp;Easily extendable with new attributes  
-✅ &nbsp;Easily extendable with new adapters for hydration data  
-✅ &nbsp;Strict type checking  
+✅ &nbsp;Various attributes for modifying and validating data  
+✅ &nbsp;Reusable hydration using memoized reflection for improved speed  
+✅ &nbsp;Extendable with new attributes and adapters for hydration data  
 ✅ &nbsp;Ability to hydrate to any depth  
-✅ &nbsp;Ability to modify error messages
+✅ &nbsp;Modifiable error messages   
 
 <hr />
 
@@ -31,14 +30,14 @@ Some features offered by this library include:
 - [Hydrating from Different Sources](#hydrating-from-different-sources)
 
 ## Installation
-To install the latest version of the library, use the following command:
+To install the latest version of the library, run the following command:
 
 ```
 composer require ngexp/hydrator
 ```
 
 ## Basic Usage
-The following is an example of how the library can be used to hydrate a class:
+Here's an example of how to use the library to hydrate a class:
 
 ```php
 <?php
@@ -54,7 +53,7 @@ use Ngexp\Hydrator\Constraints\Min
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
 
-// The data we want to hydrate the instance with.
+// JSON data to be hydrated into the class
 $json = <<<JSON
 {
   "name": "John Doe",
@@ -62,7 +61,7 @@ $json = <<<JSON
 }
 JSON;
 
-// The class structure is the same as the JSON data.
+// Class structure should match the JSON data
 class User
 {
   public string $name;
@@ -71,7 +70,7 @@ class User
 }
 
 try {
-  // Create a new instance of the class by specifying its name.
+  // Create an instance of the Hydrator class and specify the class name
   $hydrator = new Hydrator(User::class);
   // Hydrate the class using the JSON adapter.
   $class = $hydrator->hydrate(new JsonAdapter($json));
@@ -83,7 +82,7 @@ try {
 }
 ```
 
-Running the code above will result in an error:
+As a demonstration, running the code above will throw a HydrationException:
 ```
 Ngexp\Hydrator\Docs\User::age can not be less than 30, got 20.
 ```
