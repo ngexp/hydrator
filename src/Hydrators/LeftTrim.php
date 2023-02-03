@@ -8,6 +8,7 @@ use Attribute;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\IHydratorAttribute;
+use Ngexp\Hydrator\Type;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class LeftTrim implements IHydratorAttribute
@@ -23,7 +24,7 @@ class LeftTrim implements IHydratorAttribute
   {
     $value = $context->getValue();
     if (!is_string($value)) {
-      return $context->withError(ErrorCode::STRING);
+      return $context->withError(ErrorCode::INVALID_TYPE, ["type" => Type::STRING]);
     }
 
     return $context->withValue(ltrim($value, $this->characters));

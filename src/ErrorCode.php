@@ -40,5 +40,4 @@ class ErrorCode
  const PROP_ERROR = "PROP_ERROR";
  const REQUIRED = "REQUIRED";
  const SMALL = "SMALL";
- const STRING = "STRING";
 }

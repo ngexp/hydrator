@@ -37,5 +37,4 @@ return [
   ErrorCode::PROP_ERROR => "Error in the property {propertyName} of type {className}[].",
   ErrorCode::REQUIRED => "{className}::{propertyName} is required, value is missing.",
   ErrorCode::SMALL => "{className}::{propertyName} can not be less than {min}, got {value}.",
-  ErrorCode::STRING => "{className}::{propertyName} value is not of type string.",
 ];

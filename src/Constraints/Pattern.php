@@ -8,6 +8,7 @@ use Attribute;
 use Ngexp\Hydrator\ErrorCode;
 use Ngexp\Hydrator\IHydratorAttribute;
 use Ngexp\Hydrator\Context;
+use Ngexp\Hydrator\Type;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
 class Pattern implements IHydratorAttribute
@@ -27,7 +28,7 @@ class Pattern implements IHydratorAttribute
   {
     $value = $context->getValue();
     if (!is_string($value)) {
-      return $context->withError(ErrorCode::STRING);
+      return $context->withError(ErrorCode::INVALID_TYPE, ["typ" => Type::STRING]);
     }
     if (!preg_match($this->pattern, $value)) {
       if ($this->message) {
