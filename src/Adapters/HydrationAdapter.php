@@ -48,13 +48,14 @@ abstract class HydrationAdapter
     $newHydrationData = [];
     foreach ($hydrationData as $key => $value) {
       if (is_string($key)) {
+        $key = strtolower($key);
+
         $parts = explode("_", $key);
         if (count($parts) > 1) {
           $key = "";
           foreach ($parts as $part) {
             $key .= ucfirst($part);
           }
-          $key = lcfirst($key);
         }
       }
       if (is_array($value)) {
