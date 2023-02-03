@@ -7,11 +7,11 @@ namespace Ngexp\Hydrator\Constraints;
 use Attribute;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\ErrorCode;
-use Ngexp\Hydrator\IConstraintAttribute;
+use Ngexp\Hydrator\IHydratorAttribute;
 use Ngexp\Hydrator\Type;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class NotEmpty implements IConstraintAttribute
+class NotEmpty implements IHydratorAttribute
 {
   /**
    * @param string|null $message Custom error message
@@ -21,7 +21,7 @@ class NotEmpty implements IConstraintAttribute
   {
   }
 
-  public function constraint(Context $context): Context
+  public function process(Context $context): Context
   {
     $value = $context->getValue();
     $result = match($context->getValueType()) {

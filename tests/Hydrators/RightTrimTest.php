@@ -15,7 +15,7 @@ class RightTrimTest extends AttributeTestCase
   public function test_string_no_right_trim_needed_should_pass()
   {
     $attr = new RightTrim();
-    $context = $attr->hydrateValue($this->context("Hello"));
+    $context = $attr->process($this->context("Hello"));
 
     $this->assertTrue($context->isValid());
 
@@ -28,7 +28,7 @@ class RightTrimTest extends AttributeTestCase
   public function test_string_right_trim_should_pass()
   {
     $attr = new RightTrim();
-    $context = $attr->hydrateValue($this->context("  Hello \t  \n  "));
+    $context = $attr->process($this->context("  Hello \t  \n  "));
 
     $this->assertTrue($context->isValid());
 
@@ -41,7 +41,7 @@ class RightTrimTest extends AttributeTestCase
   public function test_string_right_trim_of_type_int_should_throw()
   {
     $attr = new RightTrim();
-    $context = $attr->hydrateValue($this->context(66));
+    $context = $attr->process($this->context(66));
 
     $this->assertFalse($context->isValid());
   }

@@ -16,7 +16,7 @@ class CustomHydrator implements IHydratorAttribute
   {
   }
 
-  public function hydrateValue(Context $context): Context
+  public function process(Context $context): Context
   {
     if (!class_exists($this->className)) {
       return $context->withError(ErrorCode::CLASS_NAME, ['className' => $this->className]);

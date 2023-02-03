@@ -13,7 +13,7 @@ class MaxTest extends AttributeTestCase
   public function test_int_value_less_than_max()
   {
     $attr = new Max(10);
-    $result = $attr->constraint($this->context(5));
+    $result = $attr->process($this->context(5));
 
     $this->assertTrue($result->isValid());
   }
@@ -22,7 +22,7 @@ class MaxTest extends AttributeTestCase
   public function test_int_value_greater_than_max()
   {
     $attr = new Max(10);
-    $result = $attr->constraint($this->context(15));
+    $result = $attr->process($this->context(15));
 
     $this->assertFalse($result->isValid());
   }
@@ -31,7 +31,7 @@ class MaxTest extends AttributeTestCase
   public function test_int_value_equal_to_max()
   {
     $attr = new Max(10);
-    $result = $attr->constraint($this->context(10));
+    $result = $attr->process($this->context(10));
 
     $this->assertTrue($result->isValid());
   }

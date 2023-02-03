@@ -16,7 +16,7 @@ class AutoCastTest extends AttributeTestCase
   public function test_auto_cast_to_bool(): void
   {
     $attr = new AutoCast();
-    $context = $attr->hydrateValue($this->context("On", Type::BOOL));
+    $context = $attr->process($this->context("On", Type::BOOL));
 
     $this->assertTrue($context->isValid());
 
@@ -30,7 +30,7 @@ class AutoCastTest extends AttributeTestCase
   public function test_auto_cast_to_float(): void
   {
     $attr = new AutoCast();
-    $context = $attr->hydrateValue($this->context("1.0", Type::FLOAT));
+    $context = $attr->process($this->context("1.0", Type::FLOAT));
 
     $this->assertTrue($context->isValid());
 
@@ -44,7 +44,7 @@ class AutoCastTest extends AttributeTestCase
   public function test_auto_cast_to_int(): void
   {
     $attr = new AutoCast();
-    $context = $attr->hydrateValue($this->context("1", Type::INT));
+    $context = $attr->process($this->context("1", Type::INT));
 
     $this->assertTrue($context->isValid());
 
@@ -58,7 +58,7 @@ class AutoCastTest extends AttributeTestCase
   public function test_auto_cast_to_string(): void
   {
     $attr = new AutoCast();
-    $context = $attr->hydrateValue($this->context(1, Type::STRING));
+    $context = $attr->process($this->context(1, Type::STRING));
 
     $this->assertTrue($context->isValid());
 
@@ -72,7 +72,7 @@ class AutoCastTest extends AttributeTestCase
   public function test_auto_cast_to_unsupported_type(): void
   {
     $attr = new AutoCast();
-    $context = $attr->hydrateValue($this->context("Hello", Type::ARRAY));
+    $context = $attr->process($this->context("Hello", Type::ARRAY));
 
     $this->assertFalse($context->isValid());
   }

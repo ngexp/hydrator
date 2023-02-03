@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpIllegalPsrClassPathInspection */
+
 declare(strict_types=1);
 
 namespace Ngexp\Hydrator\Docs;
@@ -12,11 +14,14 @@ use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
 
-// Fails if specified country isn't from scandinavia.
-class FromScandinavia {
+// Validator checks if string contains a scandinavian country name.
+class IsFromScandinavia {
   public function __invoke(Context $context): Context
   {
     $value = $context->getValue();
+    if (! is_string($value)) {
+      return $context->withErrorMessage("{value} is not part of Scandinavia");
+    }
     $value = strtolower(trim($value));
 
     if ($value !== "denmark" && $value !== "norway" && $value !== "sweden") {
@@ -36,7 +41,7 @@ $json = <<<JSON
 JSON;
 
 class Location {
-  #[CustomConstraint(FromScandinavia::class)]
+  #[CustomConstraint(IsFromScandinavia::class)]
   public string $country;
 }
 

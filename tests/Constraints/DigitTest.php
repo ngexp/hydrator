@@ -14,7 +14,7 @@ class DigitTest extends AttributeTestCase
   public function test_valid_digit()
   {
     $attr = new Digit();
-    $result = $attr->constraint($this->context("123"));
+    $result = $attr->process($this->context("123"));
 
     $this->assertTrue($result->isValid());
   }
@@ -23,7 +23,7 @@ class DigitTest extends AttributeTestCase
   public function test_invalid_digit()
   {
     $attr = new Digit();
-    $result = $attr->constraint($this->context("not a number"));
+    $result = $attr->process($this->context("not a number"));
 
     $this->assertFalse($result->isValid());
   }

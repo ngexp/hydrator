@@ -8,10 +8,10 @@ namespace Ngexp\Hydrator\Constraints;
 use Attribute;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\ErrorCode;
-use Ngexp\Hydrator\IConstraintAttribute;
+use Ngexp\Hydrator\IHydratorAttribute;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class CustomConstraint implements IConstraintAttribute
+class CustomConstraint implements IHydratorAttribute
 {
   /**
    * @param string $className
@@ -20,7 +20,7 @@ class CustomConstraint implements IConstraintAttribute
   {
   }
 
-  public function constraint(Context $context): Context
+  public function process(Context $context): Context
   {
     if (!class_exists($this->className)) {
       return $context->withError(ErrorCode::CLASS_NAME, ['className' => $this->className]);

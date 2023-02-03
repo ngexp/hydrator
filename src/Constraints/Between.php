@@ -6,12 +6,12 @@ namespace Ngexp\Hydrator\Constraints;
 
 use Attribute;
 use Ngexp\Hydrator\ErrorCode;
-use Ngexp\Hydrator\IConstraintAttribute;
+use Ngexp\Hydrator\IHydratorAttribute;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\Type;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class Between implements IConstraintAttribute
+class Between implements IHydratorAttribute
 {
   /**
    * @param int         $min
@@ -26,7 +26,7 @@ class Between implements IConstraintAttribute
   {
   }
 
-  public function constraint(Context $context): Context
+  public function process(Context $context): Context
   {
     $value = $context->getValue();
     $type = $context->getValueType();

@@ -18,7 +18,7 @@ class CoerceIntTest extends AttributeTestCase
   {
     $attr = new CoerceInt();
     $context = $this->context(1);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -33,7 +33,7 @@ class CoerceIntTest extends AttributeTestCase
   {
     $attr = new CoerceInt();
     $context = $this->context("Hello");
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertFalse($context->isValid());
   }
@@ -43,7 +43,7 @@ class CoerceIntTest extends AttributeTestCase
   {
     $attr = new CoerceInt();
     $context = $this->context(1.0);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -58,7 +58,7 @@ class CoerceIntTest extends AttributeTestCase
   {
     $attr = new CoerceInt();
     $context = $this->context("100");
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 

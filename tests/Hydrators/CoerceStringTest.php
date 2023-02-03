@@ -19,7 +19,7 @@ class CoerceStringTest extends AttributeTestCase
   {
     $attr = new CoerceString();
     $context = $this->context("Hello, world!");
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -34,7 +34,7 @@ class CoerceStringTest extends AttributeTestCase
   {
     $attr = new CoerceString();
     $context = $this->context(100);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -49,7 +49,7 @@ class CoerceStringTest extends AttributeTestCase
   {
     $attr = new CoerceString();
     $context = $this->context(100.1);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -63,7 +63,7 @@ class CoerceStringTest extends AttributeTestCase
   public function test_coerce_string_from_object_should_throw()
   {
     $attr = new CoerceString();
-    $context = $attr->hydrateValue($this->context(new stdClass()));
+    $context = $attr->process($this->context(new stdClass()));
 
     $this->assertFalse($context->isValid());
   }
@@ -72,7 +72,7 @@ class CoerceStringTest extends AttributeTestCase
   public function test_coerce_string_from_array_should_throw()
   {
     $attr = new CoerceString();
-    $context = $attr->hydrateValue($this->context([]));
+    $context = $attr->process($this->context([]));
 
     $this->assertFalse($context->isValid());
   }

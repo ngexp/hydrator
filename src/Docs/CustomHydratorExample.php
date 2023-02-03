@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpIllegalPsrClassPathInspection */
+
 declare(strict_types = 1);
 
 namespace Ngexp\Hydrator\Docs;
@@ -18,9 +20,8 @@ class FountainOfYouth {
   {
     $value = $context->getValue();
     $value = max(0, $value - 10);
-    $context->setValue($value);
 
-    return $context;
+    return $context->withValue($value);
   }
 }
 

@@ -17,7 +17,7 @@ class CoerceString implements IHydratorAttribute
   {
   }
 
-  public function hydrateValue(Context $context): Context
+  public function process(Context $context): Context
   {
     $value = $context->getValue();
     if (is_array($value) || is_object($value)) {

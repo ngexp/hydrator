@@ -35,7 +35,7 @@ class Hydrator
     $classType = new ClassType($this->className);
     $context = new Context(null, $adapter->getHydrationData(), $classType);
     $classType->setResolvedProperties($this->resolvedProperties);
-    $context = $classType->hydrateValue($context);
+    $context = $classType->process($context);
     if (!$context->isValid()) {
       $errorMessages = new ErrorMessageAggregate($context->getErrors(), $this->customErrorMessages);
       throw new HydratorException(

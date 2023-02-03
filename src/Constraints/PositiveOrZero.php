@@ -6,11 +6,11 @@ namespace Ngexp\Hydrator\Constraints;
 
 use Attribute;
 use Ngexp\Hydrator\ErrorCode;
-use Ngexp\Hydrator\IConstraintAttribute;
+use Ngexp\Hydrator\IHydratorAttribute;
 use Ngexp\Hydrator\Context;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class PositiveOrZero implements IConstraintAttribute
+class PositiveOrZero implements IHydratorAttribute
 {
   /**
    * @param string|null $message Custom error message
@@ -20,7 +20,7 @@ class PositiveOrZero implements IConstraintAttribute
   {
   }
 
-  public function constraint(Context $context): Context
+  public function process(Context $context): Context
   {
     $value = $context->getValue();
     if (!is_int($value) && !is_float($value)) {

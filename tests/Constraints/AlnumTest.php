@@ -13,7 +13,7 @@ class AlnumTest extends AttributeTestCase
   public function test_valid_alnum()
   {
     $attr = new Alnum();
-    $result = $attr->constraint($this->context("ABC123"));
+    $result = $attr->process($this->context("ABC123"));
 
     $this->assertTrue($result->isValid());
   }
@@ -22,7 +22,7 @@ class AlnumTest extends AttributeTestCase
   public function test_invalid_alnum()
   {
     $attr = new Alnum();
-    $result = $attr->constraint($this->context("*"));
+    $result = $attr->process($this->context("*"));
 
     $this->assertFalse($result->isValid());
   }

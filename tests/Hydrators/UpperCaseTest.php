@@ -13,7 +13,7 @@ class UpperCaseTest extends AttributeTestCase
   public function test_convert_lower_case_to_upper_case_chars()
   {
     $attr = new UpperCase();
-    $context = $attr->hydrateValue($this->context("hello"));
+    $context = $attr->process($this->context("hello"));
 
     $this->assertTrue($context->isValid());
 
@@ -26,7 +26,7 @@ class UpperCaseTest extends AttributeTestCase
   public function test_upper_case_invalid_type()
   {
     $attr = new UpperCase();
-    $context = $attr->hydrateValue($this->context(66));
+    $context = $attr->process($this->context(66));
 
     $this->assertFalse($context->isValid());
   }

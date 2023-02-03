@@ -17,25 +17,25 @@ class AutoCast implements IHydratorAttribute
   {
   }
 
-  public function hydrateValue(Context $context): Context
+  public function process(Context $context): Context
   {
     $expectedType = $context->getExpectedType();
     switch ($expectedType) {
       case Type::BOOL:
         $hydrate = new CoerceBool();
-        return $hydrate->hydrateValue($context);
+        return $hydrate->process($context);
 
       case Type::FLOAT:
         $hydrate = new CoerceFloat();
-        return $hydrate->hydrateValue($context);
+        return $hydrate->process($context);
 
       case Type::INT:
         $hydrate = new CoerceInt();
-        return $hydrate->hydrateValue($context);
+        return $hydrate->process($context);
 
       case Type::STRING:
         $hydrate = new CoerceString();
-        return $hydrate->hydrateValue($context);
+        return $hydrate->process($context);
 
       case Type::MIXED:
         return $context->asValid();

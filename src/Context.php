@@ -15,7 +15,7 @@ class Context
   use StringFormatting;
 
   private ErrorCollection $errors;
-  private bool $isValid = true;
+  private bool $isValid = false;
   private ?Context $parentContext = null;
 
   /**
@@ -108,11 +108,6 @@ class Context
     return $this->getVariableType($this->value);
   }
 
-  public function setValue(mixed $value): void
-  {
-    $this->value = $value;
-  }
-
   public function inheritState(Context $context): Context
   {
     $this->errors->inheritErrors($context->getErrors());
@@ -124,6 +119,7 @@ class Context
   public function withValue(mixed $value): Context
   {
     $this->value = $value;
+    $this->isValid = true;
     return $this;
   }
 

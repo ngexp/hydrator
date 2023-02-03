@@ -13,7 +13,7 @@ class MinTest extends AttributeTestCase
   public function test_int_value_greater_than_min()
   {
     $attr = new Min(5);
-    $result = $attr->constraint($this->context(10));
+    $result = $attr->process($this->context(10));
 
     $this->assertTrue($result->isValid());
   }
@@ -22,7 +22,7 @@ class MinTest extends AttributeTestCase
   public function test_int_value_less_than_min()
   {
     $attr = new Min(5);
-    $result = $attr->constraint($this->context(1));
+    $result = $attr->process($this->context(1));
 
     $this->assertFalse($result->isValid());
   }
@@ -31,7 +31,7 @@ class MinTest extends AttributeTestCase
   public function test_int_value_equal_to_min()
   {
     $attr = new Min(5);
-    $result = $attr->constraint($this->context(5));
+    $result = $attr->process($this->context(5));
 
     $this->assertTrue($result->isValid());
   }

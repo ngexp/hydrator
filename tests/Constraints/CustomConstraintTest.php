@@ -31,7 +31,7 @@ class CustomConstraintTest extends AttributeTestCase
   {
      $attr = new CustomConstraint(GreaterThan10::class);
      $context = $this->context(15);
-     $context = $attr->constraint($context);
+     $context = $attr->process($context);
 
      $this->assertTrue($context->isValid());
   }
@@ -41,7 +41,7 @@ class CustomConstraintTest extends AttributeTestCase
   {
     $attr = new CustomConstraint("SomeClass");
     $context = $this->context(15);
-    $context = $attr->constraint($context);
+    $context = $attr->process($context);
 
     $this->assertFalse($context->isValid());
     $error = $context->getErrors()->first();
@@ -53,7 +53,7 @@ class CustomConstraintTest extends AttributeTestCase
   {
     $attr = new CustomConstraint(NoneInvokable::class);
     $context = $this->context(1);
-    $context = $attr->constraint($context);
+    $context = $attr->process($context);
 
     $this->assertFalse($context->isValid());
     $error = $context->getErrors()->first();

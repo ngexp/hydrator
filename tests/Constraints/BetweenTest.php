@@ -13,7 +13,7 @@ class BetweenTest extends AttributeTestCase
   public function test_string_len_is_greater_than_min()
   {
     $attr = new Between(min: 2);
-    $result = $attr->constraint($this->context("Hello"));
+    $result = $attr->process($this->context("Hello"));
 
     $this->assertTrue($result->isValid());
   }
@@ -22,7 +22,7 @@ class BetweenTest extends AttributeTestCase
   public function test_string_len_is_equal_to_min()
   {
     $attr = new Between(min: 2);
-    $result = $attr->constraint($this->context("He"));
+    $result = $attr->process($this->context("He"));
 
     $this->assertTrue($result->isValid());
   }
@@ -31,7 +31,7 @@ class BetweenTest extends AttributeTestCase
   public function test_string_len_is_less_than_min()
   {
     $attr = new Between(min: 2);
-    $result = $attr->constraint($this->context("H"));
+    $result = $attr->process($this->context("H"));
 
     $this->assertFalse($result->isValid());
   }
@@ -40,7 +40,7 @@ class BetweenTest extends AttributeTestCase
   public function test_string_len_is_less_than_max()
   {
     $attr = new Between(max: 10);
-    $result = $attr->constraint($this->context("Hello"));
+    $result = $attr->process($this->context("Hello"));
 
     $this->assertTrue($result->isValid());
   }
@@ -49,7 +49,7 @@ class BetweenTest extends AttributeTestCase
   public function test_string_len_is_equal_to_max()
   {
     $attr = new Between(max: 10);
-    $result = $attr->constraint($this->context("Hello, wor"));
+    $result = $attr->process($this->context("Hello, wor"));
 
     $this->assertTrue($result->isValid());
   }
@@ -58,7 +58,7 @@ class BetweenTest extends AttributeTestCase
   public function test_string_len_is_greater_than_max()
   {
     $attr = new Between(max: 10);
-    $result = $attr->constraint($this->context("Hello, word!"));
+    $result = $attr->process($this->context("Hello, word!"));
 
     $this->assertFalse($result->isValid());
   }
@@ -67,7 +67,7 @@ class BetweenTest extends AttributeTestCase
   public function test_string_len_is_between_min_and_max_size()
   {
     $attr = new Between(min: 2, max: 10);
-    $result = $attr->constraint($this->context("Hello"));
+    $result = $attr->process($this->context("Hello"));
 
     $this->assertTrue($result->isValid());
   }
@@ -76,7 +76,7 @@ class BetweenTest extends AttributeTestCase
   public function test_string_len_is_less_than_min_and_max_size()
   {
     $attr = new Between(min: 2, max: 10);
-    $result = $attr->constraint($this->context("H"));
+    $result = $attr->process($this->context("H"));
 
     $this->assertFalse($result->isValid());
   }
@@ -85,7 +85,7 @@ class BetweenTest extends AttributeTestCase
   public function test_string_len_is_greater_than_min_and_max_size()
   {
     $attr = new Between(min: 2, max: 10);
-    $result = $attr->constraint($this->context("Hello, world!"));
+    $result = $attr->process($this->context("Hello, world!"));
 
     $this->assertFalse($result->isValid());
   }
@@ -94,7 +94,7 @@ class BetweenTest extends AttributeTestCase
   public function test_array_size_is_greater_than_min()
   {
     $attr = new Between(min: 2);
-    $result = $attr->constraint($this->context([1, 2, 3]));
+    $result = $attr->process($this->context([1, 2, 3]));
 
     $this->assertTrue($result->isValid());
   }
@@ -103,7 +103,7 @@ class BetweenTest extends AttributeTestCase
   public function test_array_size_is_equal_to_min()
   {
     $attr = new Between(min: 2);
-    $result = $attr->constraint($this->context([1, 2]));
+    $result = $attr->process($this->context([1, 2]));
 
     $this->assertTrue($result->isValid());
   }
@@ -112,7 +112,7 @@ class BetweenTest extends AttributeTestCase
   public function test_array_size_is_less_than_min()
   {
     $attr = new Between(min: 2);
-    $result = $attr->constraint($this->context([1]));
+    $result = $attr->process($this->context([1]));
 
     $this->assertFalse($result->isValid());
   }
@@ -121,7 +121,7 @@ class BetweenTest extends AttributeTestCase
   public function test_array_size_is_less_than_max()
   {
     $attr = new Between(max: 10);
-    $result = $attr->constraint($this->context([1, 2, 3, 4]));
+    $result = $attr->process($this->context([1, 2, 3, 4]));
 
     $this->assertTrue($result->isValid());
   }
@@ -130,7 +130,7 @@ class BetweenTest extends AttributeTestCase
   public function test_array_size_is_equal_to_max()
   {
     $attr = new Between(max: 10);
-    $result = $attr->constraint($this->context([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
+    $result = $attr->process($this->context([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
 
     $this->assertTrue($result->isValid());
   }
@@ -139,7 +139,7 @@ class BetweenTest extends AttributeTestCase
   public function test_array_size_is_greater_than_max()
   {
     $attr = new Between(max: 10);
-    $result = $attr->constraint($this->context([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]));
+    $result = $attr->process($this->context([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]));
 
     $this->assertFalse($result->isValid());
   }
@@ -148,7 +148,7 @@ class BetweenTest extends AttributeTestCase
   public function test_array_size_is_between_min_and_max_size()
   {
     $attr = new Between(min: 2, max: 10);
-    $result = $attr->constraint($this->context([1, 2, 3, 4]));
+    $result = $attr->process($this->context([1, 2, 3, 4]));
 
     $this->assertTrue($result->isValid());
   }
@@ -157,7 +157,7 @@ class BetweenTest extends AttributeTestCase
   public function test_array_size_is_less_than_min_and_max_size()
   {
     $attr = new Between(min: 2, max: 10);
-    $result = $attr->constraint($this->context([1]));
+    $result = $attr->process($this->context([1]));
 
     $this->assertFalse($result->isValid());
   }
@@ -166,7 +166,7 @@ class BetweenTest extends AttributeTestCase
   public function test_array_size_is_greater_than_min_and_max_size()
   {
     $attr = new Between(min: 2, max: 10);
-    $result = $attr->constraint($this->context([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]));
+    $result = $attr->process($this->context([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]));
 
     $this->assertFalse($result->isValid());
   }

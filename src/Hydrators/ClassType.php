@@ -7,7 +7,6 @@ namespace Ngexp\Hydrator\Hydrators;
 use Attribute;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\ErrorCode;
-use Ngexp\Hydrator\IConstraintAttribute;
 use Ngexp\Hydrator\IResolvedAttribute;
 use Ngexp\Hydrator\IHydratorAttribute;
 use Ngexp\Hydrator\ResolvedProperties;
@@ -34,7 +33,7 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
     $this->uid = uniqid();
   }
 
-  public function hydrateValue(Context $context): Context
+  public function process(Context $context): Context
   {
     // If we didn't get the resolved properties then resolve them now. This usually happens on depth calls, while
     // we pre-resolve on shallow classes for speed.
@@ -57,10 +56,13 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
 
       // Check if we have the data to hydrate the property with.
       if (!array_key_exists($propertyName, $hydrationData)) {
-        if (!$property->isOptional()) {
+        if ($property->isOptional()) {
+          $propContext->asValid();
+        } else {
           $propContext->withError(ErrorCode::REQUIRED);
           $context->inheritState($propContext);
         }
+
         continue;
       }
 
@@ -82,14 +84,8 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
         continue;
       }
 
-      // Now go through all constraints attributes and verify that the value pass all the checks.
-      $propContext = $this->runConstraints($propContext);
-      if (!$propContext->isValid()) {
-        $context->inheritState($propContext);
-        continue;
-      }
-
       $this->setPropertyValue($classInstance, $propContext);
+      $context->inheritState($propContext);
     }
     if (!$context->isValid()) {
       return $context;
@@ -119,7 +115,7 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
     // a prop that is already type defined.
     if ($context->isClassProperty()) {
       $classType = new ClassType($context->getClassName());
-      $context = $classType->hydrateValue($context);
+      $context = $classType->process($context);
       if (!$context->isValid()) {
         return $context;
       }
@@ -131,23 +127,7 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
         continue;
       }
 
-      $context = $instance->hydrateValue($context);
-      if (!$context->isValid()) {
-        return $context;
-      }
-    }
-    return $context->asValid();
-  }
-
-  private function runConstraints(Context $context): Context
-  {
-    foreach ($context->getProperty()->getAttributes() as $attribute) {
-      $instance = $attribute->newInstance();
-      if (!($instance instanceof IConstraintAttribute)) {
-        continue;
-      }
-
-      $context = $instance->constraint($context);
+      $context = $instance->process($context);
       if (!$context->isValid()) {
         return $context;
       }
@@ -157,7 +137,6 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
 
   private function verifyTypeMatch(Context $context): Context
   {
-    $expectedType = $context->getExpectedType();
     $actualType = $context->getValueType();
 
     if ($actualType === Type::NULL) {
@@ -174,8 +153,7 @@ class ClassType implements IHydratorAttribute, IResolvedAttribute
         if (!$value) {
           return $context->withError(ErrorCode::ENUM);
         }
-        $context->setValue($value);
-        return $context->asValid();
+        return $context->withValue($value);
       }
     }
 

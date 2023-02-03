@@ -14,7 +14,7 @@ class TrimTest extends AttributeTestCase
   public function test_string_no_trimming_needed_should_pass()
   {
     $attr = new Trim();
-    $context = $attr->hydrateValue($this->context("Hello"));
+    $context = $attr->process($this->context("Hello"));
 
     $this->assertTrue($context->isValid());
 
@@ -27,7 +27,7 @@ class TrimTest extends AttributeTestCase
   public function test_string_trimming_should_pass()
   {
     $attr = new Trim();
-    $context = $attr->hydrateValue($this->context("  Hello "));
+    $context = $attr->process($this->context("  Hello "));
 
     $this->assertTrue($context->isValid());
 
@@ -40,7 +40,7 @@ class TrimTest extends AttributeTestCase
   public function test_string_trimming_of_type_int_should_throw()
   {
     $attr = new Trim();
-    $context = $attr->hydrateValue($this->context(66));
+    $context = $attr->process($this->context(66));
 
     $this->assertFalse($context->isValid());
   }

@@ -6,5 +6,5 @@ namespace Ngexp\Hydrator;
 
 interface IHydratorAttribute
 {
-  public function hydrateValue(Context $context): Context;
+  public function process(Context $context): Context;
 }

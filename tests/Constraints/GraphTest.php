@@ -13,7 +13,7 @@ class GraphTest extends AttributeTestCase
   public function test_valid_graph()
   {
     $attr = new Graph();
-    $result = $attr->constraint($this->context("ABC123"));
+    $result = $attr->process($this->context("ABC123"));
 
     $this->assertTrue($result->isValid());
   }
@@ -22,7 +22,7 @@ class GraphTest extends AttributeTestCase
   public function test_invalid_graph()
   {
     $attr = new Graph();
-    $result = $attr->constraint($this->context("ABC\t\n"));
+    $result = $attr->process($this->context("ABC\t\n"));
 
     $this->assertFalse($result->isValid());
   }

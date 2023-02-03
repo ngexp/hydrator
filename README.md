@@ -5,15 +5,19 @@
 
 Minimum supported php version is 8.1
 
-This library hydrates and instantiates classes. Attributes allow you to modify, convert and validate the data before it hydrates the properties. There are two types of attributes, the hydrator attribute and the constraint attribute. The hydrator attribute modifies data and the constraint attribute validates data. Here is a small taste of the features this library offers:
+Hydrating data means populating an object with data from a source, such as an array or JSON. The process of hydration typically involves mapping the data from the source to the properties of the object and transforming or casting the data to the correct data type, as specified by the object's property type.
 
-✅ &nbsp;Many attributes available to modify and validate data  
-✅ &nbsp;Reusable hydrator for the same class type using memoized reflection for speed    
-✅ &nbsp;Easily extendable with new attributes   
+Attributes provide a way to add additional behavior to the process of hydration, such as converting the data from one type to another, validating the data to ensure it meets certain criteria, and more. The use of attributes makes it possible to have a flexible and customizable process for hydration.
+
+Some features offered by this library include:
+
+✅ &nbsp;Many attributes to modify and validate data  
+✅ &nbsp;Reusable hydration for the same class type using memoized reflection for speed  
+✅ &nbsp;Easily extendable with new attributes  
 ✅ &nbsp;Easily extendable with new adapters for hydration data  
 ✅ &nbsp;Strict type checking  
-✅ &nbsp;Hydrate to any depth  
-✅ &nbsp;Error messages can be modified   
+✅ &nbsp;Ability to hydrate to any depth  
+✅ &nbsp;Ability to modify error messages
 
 <hr />
 
@@ -21,18 +25,20 @@ This library hydrates and instantiates classes. Attributes allow you to modify, 
 
 - [Installation](#installation)
 - [Basic Usage](#basic-usage)
+- [Attribute Order Matter](#attribute-order-matter)
 - [The constructor is not invoked](#the-constructor-is-not-invoked)
 - [Attributes](#attributes)
-- [Adapters](#adapters)
+- [Hydrating from Different Sources](#hydrating-from-different-sources)
 
 ## Installation
-Install the latest version with
+To install the latest version of the library, use the following command:
 
 ```
 composer require ngexp/hydrator
 ```
 
 ## Basic Usage
+The following is an example of how the library can be used to hydrate a class:
 
 ```php
 <?php
@@ -44,7 +50,7 @@ namespace Ngexp\Hydrator\Docs;
 require_once '../../vendor/autoload.php';
 
 use Ngexp\Hydrator\Adapters\JsonAdapter;
-use Ngexp\Hydrator\Constraints\Min;
+use Ngexp\Hydrator\Constraints\Min
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
 
@@ -56,7 +62,7 @@ $json = <<<JSON
 }
 JSON;
 
-// The class has the same data structure as the json data.
+// The class structure is the same as the JSON data.
 class User
 {
   public string $name;
@@ -65,9 +71,9 @@ class User
 }
 
 try {
-  // We create a new instance of the class by specifying its class name.
+  // Create a new instance of the class by specifying its name.
   $hydrator = new Hydrator(User::class);
-  // Hydrate using the json adapter.
+  // Hydrate the class using the JSON adapter.
   $class = $hydrator->hydrate(new JsonAdapter($json));
 
   var_dump($class);
@@ -77,23 +83,35 @@ try {
 }
 ```
 
-Running this will print out an error:
+Running the code above will result in an error:
 ```
 Ngexp\Hydrator\Docs\User::age can not be less than 30, got 20.
 ```
 
-We have an attribute set on the age property called Min, this is a constraint attribute that verifies
-that the value is at least 30, but the JSON value for age is only 20.
+In this example, the age property has a Min validation attribute set to 30, but the value for age in the JSON data is 20.
 
-The hydrator expect strict types, but we have a couple of attributes that can automatically convert to a specific type if possible, in this case adding the following attribute before the age property will get rid of the exception:
+The Hydrator requires strict typing, but certain attributes can automatically convert values to a specific type if possible.
+For example, if a value is a string, adding the AutoCast attribute will automatically cast it to an integer.
 
 ```php
 #[AutoCast]
 private int $age;
 ```
 
+You can also narrow it and use CoerceInt instead, both will internally use CoerceInt since the property type is int.
+
+```php
+#[CoerceInt]
+private int $age;
+```
+
+You can also use the CoerceInt attribute to achieve the same result. Both AutoCast and CoerceInt will internally use 
+CoerceInt since the property type is an integer.
+
+
 ## The constructor is not invoked
-When the hydrator instantiate the class, it does so without invoking the class constructor. This opens up the possibility to declare our properties directly in the constructor without needing to supply the data at the instantiation moment. 
+When the Hydrator instantiates a class, it does so without invoking the class constructor. This means that properties
+can be declared directly in the constructor without having to supply data at the instantiation moment.
 
 ```php
 class User
@@ -104,15 +122,15 @@ class User
 }
 ```
 ## Snake case to camel case
-Property names are often formatted as snake_case in things like database columns and similar. Those are automatically converted to the camelCase naming convention through the supplied adapters.
-
-So user_id is converted to userId, user_has_email is converted to userHasEmail etc.
+The Hydrator also converts snake case property names (e.g. `user_id` to `userId`) to camel case automatically through its
+adapters.
 
 ## Attributes
-Different types of attributes are available, constraint attributes that limits what can be hydrated and hydration attributes that tells how it should be hydrated.
+Different types of attributes are available, constraint attributes that limits and validates what can be hydrated and hydration 
+attributes that tells how it should be hydrated.
 
 ### Constraint attributes
-Constraint attributes validate input values.
+Validation attributes validate and constrain input values.
 
 | Attribute        | Description                                           | Arguments                    | Error codes it can return      |
 |:-----------------|:------------------------------------------------------|:-----------------------------|--------------------------------|
@@ -134,11 +152,23 @@ Constraint attributes validate input values.
 | Positive         | Number must be greater than 0                         | errorCode, message           | INVALID_TYPE, POSITIVE         |
 | PositiveOrZero   | Number must be greater than or equal to 0             | errorCode, message           | INVALID_TYPE, POSITIVE_OR_ZERO | 
 
-All constraints return an errorCode as part of the error message, if you need to override this with a custom message, you can set 
+```php
+#[Email(message="Custom error message", errorCode="unique_error_code")]
+private string $email;
+```
+
+Note that the constraint attributes are executed in the order they are added to the class, so be mindful of the order in which you declare them. 
+You can also use multiple constraint attributes on a single property to achieve more complex validations.
+
+All constraints return an errorCode on failure as part of the error message, if you need to override this with a custom message, you can set 
 your own unique error code here. Use the message parameter to override the default error message if needed.
 
 ### Hydration attributes
-Hydration attributes, transform the input value in some way.
+Hydration attributes define how the values should be transformed during the hydration process. The AutoCast and CoerceInt attributes mentioned earlier are
+examples of hydration attributes. 
+
+You can use hydration attributes to automatically cast strings to integers, floats, or booleans, or to format dates and times. Other hydration attributes can be
+used to trim strings, remove HTML tags, or to apply custom transformations.
 
 | Attribute         | Description                                                      | Arguments          | Error codes it can return                      | 
 |:------------------|:-----------------------------------------------------------------|:-------------------|------------------------------------------------|
@@ -159,15 +189,21 @@ Hydration attributes, transform the input value in some way.
 | UpperCase         | Converts alpha characters to upper case characters               |                    | STRING                                         |
 
 
-## Adapters
-To hydrate from different types of data, we supply two adapters at this time.
+## Attribute Order Matter
+It's important to note that the order of attributes matters. The IHydratorAttribute interface can be used for both
+hydration and validation, and attributes will be executed in the order they are added. This makes it possible to have
+a flexible validation and hydration process.
 
-Json adapter
+## Hydrating from Different Sources
+The hydrator is equipped with two adapters to hydrate data from different sources.
+
+For hydration from a JSON source, use the `JsonAdapter`:
 
 ```php
 $class = $hydrator->hydrate(new JsonAdapter($json));
 ```
-Array adapter
+
+And for hydration from an array source, use the `ArrayAdapter`:
 
 ```php
 $class = $hydrator->hydrate(new ArrayAdapter($array));

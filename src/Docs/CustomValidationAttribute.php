@@ -1,5 +1,7 @@
 <?php
 
+/** @noinspection PhpIllegalPsrClassPathInspection */
+
 declare(strict_types=1);
 
 namespace Ngexp\Hydrator\Docs;
@@ -11,18 +13,21 @@ use Ngexp\Hydrator\Adapters\JsonAdapter;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
-use Ngexp\Hydrator\IConstraintAttribute;
+use Ngexp\Hydrator\IHydratorAttribute;
 
-// Constraint checks if string contains a scandinavian country name.
+// Validator checks if string contains a scandinavian country name.
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class FromScandinavia implements IConstraintAttribute {
-  // In this similar example compared to CustomConstraintExample.php, instead of sending a message string, we define
+class IsFromScandinavia implements IHydratorAttribute {
+  // In this similar example compared to CustomValidationExample.php, instead of sending a message string, we define
   // a custom error code that we'll return back.
   const FAILED = "NOT_FROM_SCANDINAVIA";
 
-  public function constraint(Context $context): Context
+  public function process(Context $context): Context
   {
     $value = $context->getValue();
+    if (! is_string($value)) {
+      return $context->withError(self::FAILED);
+    }
     $value = strtolower(trim($value));
 
     if ($value !== "denmark" && $value !== "norway" && $value !== "sweden") {
@@ -35,7 +40,7 @@ class FromScandinavia implements IConstraintAttribute {
 
 // We define a list of all custom error messages.
 $customErrorMessages = [
-  FromScandinavia::FAILED => "{value} is not part of Scandinavia"
+  IsFromScandinavia::FAILED => "{value} is not part of Scandinavia"
 ];
 
 // The data we want to hydrate the instance with.
@@ -46,7 +51,7 @@ $json = <<<JSON
 JSON;
 
 class Location {
-  #[FromScandinavia]
+  #[IsFromScandinavia]
   public string $country;
 }
 

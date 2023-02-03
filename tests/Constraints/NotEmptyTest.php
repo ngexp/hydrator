@@ -13,7 +13,7 @@ class NotEmptyTest extends AttributeTestCase
   public function test_string_is_not_empty()
   {
     $attr = new NotEmpty();
-    $result = $attr->constraint($this->context("Hello, world!"));
+    $result = $attr->process($this->context("Hello, world!"));
 
     $this->assertTrue($result->isValid());
   }
@@ -22,7 +22,7 @@ class NotEmptyTest extends AttributeTestCase
   public function test_string_contains_spaces()
   {
     $attr = new NotEmpty();
-    $result = $attr->constraint($this->context("  "));
+    $result = $attr->process($this->context("  "));
 
     $this->assertTrue($result->isValid());
   }
@@ -31,7 +31,7 @@ class NotEmptyTest extends AttributeTestCase
   public function test_string_contains_white_spaces()
   {
     $attr = new NotEmpty();
-    $result = $attr->constraint($this->context("\t\n"));
+    $result = $attr->process($this->context("\t\n"));
 
     $this->assertTrue($result->isValid());
   }
@@ -40,7 +40,7 @@ class NotEmptyTest extends AttributeTestCase
   public function test_string_is_empty()
   {
     $attr = new NotEmpty();
-    $result = $attr->constraint($this->context(""));
+    $result = $attr->process($this->context(""));
 
     $this->assertFalse($result->isValid());
   }

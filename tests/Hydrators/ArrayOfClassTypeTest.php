@@ -20,7 +20,7 @@ class ArrayOfClassTypeTest extends AttributeTestCase
   {
     $attr = new ArrayOfClassType(History::class);
     $context = $this->context([["year" => 2022, "event" => "An event"]]);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 

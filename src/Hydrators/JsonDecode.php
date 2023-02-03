@@ -20,7 +20,7 @@ class JsonDecode implements IHydratorAttribute
   {
   }
 
-  public function hydrateValue(Context $context): Context
+  public function process(Context $context): Context
   {
     $value = $context->getValue();
     if (!is_string($value)) {

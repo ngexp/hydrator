@@ -15,7 +15,7 @@ class IncreaseByOneTest {
   public function __invoke(Context $context): Context
   {
     $value = $context->getValue();
-    $context->setValue($value + 1);
+    $context->withValue($value + 1);
     return $context;
   }
 }
@@ -29,7 +29,7 @@ class CustomHydratorTest extends AttributeTestCase
   {
     $attr = new CustomHydrator(IncreaseByOneTest::class);
     $context = $this->context(1);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -44,7 +44,7 @@ class CustomHydratorTest extends AttributeTestCase
   {
     $attr = new CustomHydrator("SomeClass");
     $context = $this->context(1);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertFalse($context->isValid());
     $error = $context->getErrors()->first();
@@ -56,7 +56,7 @@ class CustomHydratorTest extends AttributeTestCase
   {
     $attr = new CustomHydrator(NoneInvokable::class);
     $context = $this->context(1);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertFalse($context->isValid());
     $error = $context->getErrors()->first();

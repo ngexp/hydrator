@@ -6,11 +6,11 @@ namespace Ngexp\Hydrator\Constraints;
 
 use Attribute;
 use Ngexp\Hydrator\ErrorCode;
-use Ngexp\Hydrator\IConstraintAttribute;
+use Ngexp\Hydrator\IHydratorAttribute;
 use Ngexp\Hydrator\Context;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class Alpha implements IConstraintAttribute
+class Alpha implements IHydratorAttribute
 {
   const NOT_ALPHA = "Alpha::NOT_ALPHA";
 
@@ -22,7 +22,7 @@ class Alpha implements IConstraintAttribute
   {
   }
 
-  public function constraint(Context $context): Context
+  public function process(Context $context): Context
   {
     $result = ctype_alpha($context->getValue());
     if (!$result) {

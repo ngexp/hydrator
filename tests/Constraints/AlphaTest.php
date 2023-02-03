@@ -13,7 +13,7 @@ class AlphaTest extends AttributeTestCase
   public function test_valid_alpha()
   {
     $attr = new Alpha();
-    $result = $attr->constraint($this->context("ABC"));
+    $result = $attr->process($this->context("ABC"));
 
     $this->assertTrue($result->isValid());
   }
@@ -22,7 +22,7 @@ class AlphaTest extends AttributeTestCase
   public function test_invalid_alpha()
   {
     $attr = new Alpha();
-    $result = $attr->constraint($this->context("ABC123"));
+    $result = $attr->process($this->context("ABC123"));
 
     $this->assertFalse($result->isValid());
   }

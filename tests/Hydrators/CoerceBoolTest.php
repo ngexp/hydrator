@@ -18,7 +18,7 @@ class CoerceBoolTest extends AttributeTestCase
   {
     $attr = new CoerceBool();
     $context = $this->context(1);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -33,7 +33,7 @@ class CoerceBoolTest extends AttributeTestCase
   {
     $attr = new CoerceBool();
     $context = $this->context(0);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -48,7 +48,7 @@ class CoerceBoolTest extends AttributeTestCase
   {
     $attr = new CoerceBool();
     $context = $this->context("1");
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -63,7 +63,7 @@ class CoerceBoolTest extends AttributeTestCase
   {
     $attr = new CoerceBool();
     $context = $this->context("0");
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -78,7 +78,7 @@ class CoerceBoolTest extends AttributeTestCase
   {
     $attr = new CoerceBool();
     $context = $this->context("true");
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -93,7 +93,7 @@ class CoerceBoolTest extends AttributeTestCase
   {
     $attr = new CoerceBool();
     $context = $this->context("false");
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -108,7 +108,7 @@ class CoerceBoolTest extends AttributeTestCase
   {
     $attr = new CoerceBool();
     $context = $this->context("hello");
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertFalse($context->isValid());
   }

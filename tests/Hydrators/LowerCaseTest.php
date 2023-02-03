@@ -14,7 +14,7 @@ class LowerCaseTest extends AttributeTestCase
   public function test_convert_upper_case_chars_to_lower_case_chars()
   {
     $attr = new LowerCase();
-    $context = $attr->hydrateValue($this->context("HELLO"));
+    $context = $attr->process($this->context("HELLO"));
 
     $this->assertTrue($context->isValid());
 
@@ -27,7 +27,7 @@ class LowerCaseTest extends AttributeTestCase
   public function test_lower_case_invalid_type()
   {
     $attr = new LowerCase();
-    $context = $attr->hydrateValue($this->context(66));
+    $context = $attr->process($this->context(66));
 
     $this->assertFalse($context->isValid());
   }

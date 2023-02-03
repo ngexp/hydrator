@@ -17,7 +17,7 @@ class LeftTrimTest extends AttributeTestCase
   {
     $attr = new LeftTrim();
     $context = $this->context("Hello");
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -31,7 +31,7 @@ class LeftTrimTest extends AttributeTestCase
   {
     $attr = new LeftTrim();
     $context = $this->context("\t  \n Hello  ");
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -44,7 +44,7 @@ class LeftTrimTest extends AttributeTestCase
   public function test_string_left_trim_of_type_int()
   {
     $attr = new LeftTrim();
-    $context = $attr->hydrateValue($this->context(66));
+    $context = $attr->process($this->context(66));
 
     $this->assertFalse($context->isValid());
   }

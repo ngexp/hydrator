@@ -6,11 +6,11 @@ namespace Ngexp\Hydrator\Constraints;
 
 use Attribute;
 use Ngexp\Hydrator\ErrorCode;
-use Ngexp\Hydrator\IConstraintAttribute;
+use Ngexp\Hydrator\IHydratorAttribute;
 use Ngexp\Hydrator\Context;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class Alnum implements IConstraintAttribute
+class Alnum implements IHydratorAttribute
 {
   /**
    * @param string|null $message Custom error message
@@ -20,7 +20,7 @@ class Alnum implements IConstraintAttribute
   {
   }
 
-  public function constraint(Context $context): Context
+  public function process(Context $context): Context
   {
     $result = ctype_alnum($context->getValue());
     if (!$result) {

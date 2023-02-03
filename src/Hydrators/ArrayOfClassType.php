@@ -22,7 +22,7 @@ class ArrayOfClassType implements IHydratorAttribute
   {
   }
 
-  public function hydrateValue(Context $context): Context
+  public function process(Context $context): Context
   {
     $value = $context->getValue();
     if (!is_array($value)) {
@@ -36,7 +36,7 @@ class ArrayOfClassType implements IHydratorAttribute
       $classType = new ClassType($this->className);
       $classContext = new Context(null, $item, $classType);
       $classType->setResolvedProperties($resolvedProperties);
-      $classContext = $classType->hydrateValue($classContext);
+      $classContext = $classType->process($classContext);
       if (!$classContext->isValid()) {
         $context->inheritState($classContext);
         return $context;

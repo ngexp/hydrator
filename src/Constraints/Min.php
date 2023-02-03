@@ -6,11 +6,11 @@ namespace Ngexp\Hydrator\Constraints;
 
 use Attribute;
 use Ngexp\Hydrator\ErrorCode;
-use Ngexp\Hydrator\IConstraintAttribute;
+use Ngexp\Hydrator\IHydratorAttribute;
 use Ngexp\Hydrator\Context;
 
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]
-class Min implements IConstraintAttribute
+class Min implements IHydratorAttribute
 {
  /**
    * @param int         $min
@@ -23,7 +23,7 @@ class Min implements IConstraintAttribute
   {
   }
 
-  public function constraint(Context $context): Context
+  public function process(Context $context): Context
   {
     $value = $context->getValue();
     if (!is_int($value) && !is_float($value)) {

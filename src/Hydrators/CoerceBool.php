@@ -17,7 +17,7 @@ class CoerceBool implements IHydratorAttribute
   {
   }
 
-  public function hydrateValue(Context $context): Context
+  public function process(Context $context): Context
   {
     $result = filter_var($context->getValue(), FILTER_VALIDATE_BOOLEAN, FILTER_NULL_ON_FAILURE);
     if (is_null($result)) {

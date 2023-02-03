@@ -18,7 +18,7 @@ class JsonDecodeTest extends AttributeTestCase
   {
     $attr = new JsonDecode();
     $context = $this->context("{ \"hello\": \"world\" }", expectedType: ClassToHydrate::class);
-    $context = $attr->hydrateValue($context);
+    $context = $attr->process($context);
 
     $this->assertTrue($context->isValid());
 
@@ -32,7 +32,7 @@ class JsonDecodeTest extends AttributeTestCase
   public function test_json_decode_with_faulty_data()
   {
     $attr = new JsonDecode();
-    $context = $attr->hydrateValue($this->context("xx", expectedType: ClassToHydrate::class));
+    $context = $attr->process($this->context("xx", expectedType: ClassToHydrate::class));
 
     $this->assertFalse($context->isValid());
   }
