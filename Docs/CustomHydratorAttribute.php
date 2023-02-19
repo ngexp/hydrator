@@ -4,16 +4,13 @@
 
 declare(strict_types = 1);
 
-namespace Ngexp\Hydrator\Docs;
-
-use Attribute;
 use Ngexp\Hydrator\Adapters\JsonAdapter;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
 use Ngexp\Hydrator\IHydratorAttribute;
 
-require_once '../../vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 // Custom hydrator attribute that will decrease a value with 10, to a minimum of 0
 #[Attribute(Attribute::TARGET_METHOD | Attribute::TARGET_PROPERTY)]

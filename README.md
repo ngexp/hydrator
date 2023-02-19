@@ -17,6 +17,7 @@ features include:
 ✅ &nbsp;Extendable with new attributes and adapters for hydration data  
 ✅ &nbsp;Ability to hydrate to any depth  
 ✅ &nbsp;Modifiable error messages   
+✅ &nbsp;Easy to create custom attributes   
 
 <hr />
 
@@ -44,24 +45,23 @@ Here's an example of how to use the library to hydrate a class:
 
 declare(strict_types = 1);
 
-namespace Ngexp\Hydrator\Docs;
-
-require_once '../../vendor/autoload.php';
+require_once '../vendor/autoload.php';
 
 use Ngexp\Hydrator\Adapters\JsonAdapter;
-use Ngexp\Hydrator\Constraints\Min
+use Ngexp\Hydrator\Constraints\Min;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
 
-// JSON data to be hydrated into the class
+// The data we want to hydrate the instance with.
 $json = <<<JSON
 {
   "name": "John Doe",
-  "age": 20
+  "age": 20,
+  "unrelated": "data"
 }
 JSON;
 
-// Class structure should match the JSON data
+// The class has the same data structure as the json data.
 class User
 {
   public string $name;
@@ -70,9 +70,9 @@ class User
 }
 
 try {
-  // Create an instance of the Hydrator class and specify the class name
+  // We create a new instance of the class by specifying its class name.
   $hydrator = new Hydrator(User::class);
-  // Hydrate the class using the JSON adapter.
+  // Hydrate using the json adapter.
   $class = $hydrator->hydrate(new JsonAdapter($json));
 
   var_dump($class);
@@ -81,6 +81,11 @@ try {
   echo $e->getMessage();
 }
 ```
+
+The Hydrator will create a new instance of the class and populate it with the data from the JSON data. The Hydrator will
+also validate the data and throw an exception if the data is invalid.
+
+It will also ignore any properties that are not defined in the class, such as the `unrelated` property in the JSON data.
 
 As a demonstration, running the code above will throw a HydrationException:
 ```
@@ -104,10 +109,6 @@ You can also narrow it and use CoerceInt instead, both will internally use Coerc
 private int $age;
 ```
 
-You can also use the CoerceInt attribute to achieve the same result. Both AutoCast and CoerceInt will internally use 
-CoerceInt since the property type is an integer.
-
-
 ## The constructor is not invoked
 When the Hydrator instantiates a class, it does so without invoking the class constructor. This means that properties
 can be declared directly in the constructor without having to supply data at the instantiation moment.
@@ -120,6 +121,7 @@ class User
   }
 }
 ```
+
 ## Snake case to camel case
 The Hydrator also converts snake case property names (e.g. `user_id` to `userId`) to camel case automatically through its
 adapters.

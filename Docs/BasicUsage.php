@@ -4,39 +4,27 @@
 
 declare(strict_types = 1);
 
-namespace Ngexp\Hydrator\Docs;
+require_once '../vendor/autoload.php';
 
 use Ngexp\Hydrator\Adapters\JsonAdapter;
-use Ngexp\Hydrator\Context;
+use Ngexp\Hydrator\Constraints\Min;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
-use Ngexp\Hydrator\Hydrators\CustomHydrator;
 
-require_once '../../vendor/autoload.php';
-
-// Will decrease a value with 10, to a minimum of 0
-class FountainOfYouth {
-  public function __invoke(Context $context): Context
-  {
-    $value = $context->getValue();
-    $value = max(0, $value - 10);
-
-    return $context->withValue($value);
-  }
-}
-
+// The data we want to hydrate the instance with.
 $json = <<<JSON
 {
   "name": "John Doe",
-  "age": "33"
+  "age": 20,
+  "unrelated": "data"
 }
 JSON;
 
+// The class has the same data structure as the json data.
 class User
 {
   public string $name;
-
-  #[CustomHydrator(FountainOfYouth::class)]
+  #[Min(30)]
   public int $age;
 }
 
@@ -49,5 +37,5 @@ try {
   var_dump($class);
 
 } catch (HydratorException $e) {
-  echo $e->generateReport();
+  echo $e->getMessage();
 }

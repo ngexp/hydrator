@@ -4,11 +4,8 @@
 
 declare(strict_types=1);
 
-namespace Ngexp\Hydrator\Docs;
+require_once '../vendor/autoload.php';
 
-require_once '../../vendor/autoload.php';
-
-use Attribute;
 use Ngexp\Hydrator\Adapters\JsonAdapter;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\Hydrator;
