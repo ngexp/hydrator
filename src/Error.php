@@ -6,8 +6,7 @@ namespace Ngexp\Hydrator;
 
 class Error
 {
-  // Hopefully unique enough :^)
-  const INTERNAL_CUSTOM_MESSAGE = "94729274498208";
+  const INTERNAL_CUSTOM_MESSAGE = "30bee7b4-c32a-4225-9422-b3722311fb9a";
 
   /**
    * @param \Ngexp\Hydrator\Context $context
