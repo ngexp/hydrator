@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Ngexp\Hydrator\Traits;
 
 use JetBrains\PhpStorm\ArrayShape;
-use Ngexp\Hydrator\Constraints\Optional;
+use Ngexp\Hydrator\Asserts\Optional;
 use Ngexp\Hydrator\ResolvedProperties;
 use Ngexp\Hydrator\ResolvedProperty;
 use Ngexp\Hydrator\RuntimeHydrationException;

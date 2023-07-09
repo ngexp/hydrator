@@ -7,7 +7,7 @@ declare(strict_types = 1);
 require_once '../vendor/autoload.php';
 
 use Ngexp\Hydrator\Adapters\JsonAdapter;
-use Ngexp\Hydrator\Constraints\Min;
+use Ngexp\Hydrator\Asserts as Assert;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
 
@@ -24,7 +24,8 @@ JSON;
 class User
 {
   public string $name;
-  #[Min(30)]
+
+  #[Assert\Min(30)]
   public int $age;
 }
 

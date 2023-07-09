@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Ngexp\Hydrator;
 
 use Ngexp\Hydrator\Adapters\HydrationAdapter;
-use Ngexp\Hydrator\Hydrators\ClassType;
+use Ngexp\Hydrator\Mutators\ClassType;
 use Ngexp\Hydrator\Traits\Reflection;
 
 class Hydrator

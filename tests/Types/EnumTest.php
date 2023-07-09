@@ -3,7 +3,7 @@
 namespace Ngexp\Hydrator\Tests\Types;
 
 use Ngexp\Hydrator\Adapters\JsonAdapter;
-use Ngexp\Hydrator\Constraints\Optional;
+use Ngexp\Hydrator\Asserts\Optional;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
 use PHPUnit\Framework\TestCase;

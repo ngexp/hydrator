@@ -7,7 +7,7 @@ declare(strict_types=1);
 require_once '../vendor/autoload.php';
 
 use Ngexp\Hydrator\Adapters\JsonAdapter;
-use Ngexp\Hydrator\Constraints\CustomConstraint;
+use Ngexp\Hydrator\Asserts\CustomConstraint;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;

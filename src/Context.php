@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace Ngexp\Hydrator;
 
-use Ngexp\Hydrator\Hydrators\ClassType;
+use Ngexp\Hydrator\Mutators\ClassType;
 use Ngexp\Hydrator\Traits\ReflectionUtils;
 use Ngexp\Hydrator\Traits\StringFormatting;
 
@@ -21,7 +21,7 @@ class Context
   /**
    * @param \Ngexp\Hydrator\ResolvedProperty|null $property
    * @param mixed                                 $value
-   * @param \Ngexp\Hydrator\Hydrators\ClassType   $classType
+   * @param \Ngexp\Hydrator\Mutators\ClassType    $classType
    */
   public function __construct(private readonly ?ResolvedProperty $property,
                               private mixed                      $value,

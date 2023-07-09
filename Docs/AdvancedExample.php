@@ -6,20 +6,20 @@ declare(strict_types = 1);
 require_once '../vendor/autoload.php';
 
 use Ngexp\Hydrator\Adapters\JsonAdapter;
-use Ngexp\Hydrator\Constraints as Assert;
+use Ngexp\Hydrator\Asserts as Assert;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
-use Ngexp\Hydrator\Hydrators as Hydrate;
+use Ngexp\Hydrator\Mutators as Mutator;
 
 class HistoryDTO
 {
   #[Assert\NotBlank] // Can not be an empty or contain white spaces only
   private string $event;
 
-  #[Assert\Optional, Hydrate\CoerceInt, Assert\Max(2022)] // Data is optional, convert type to int, maximum value is 2022
+  #[Assert\Optional, Mutator\CoerceInt, Assert\Max(2022)] // Data is optional, convert type to int, maximum value is 2022
   private int $year;
 
-  #[Hydrate\HashMap(keyName: "key", valueName: "value")]  // Create an array hashmap
+  #[Mutator\HashMap(keyName: "key", valueName: "value")]  // Create an array hashmap
   private array $extra;
 
   public function getEvent(): string
@@ -56,13 +56,13 @@ class HistoryDTO
 
 class UserDTO
 {
-  #[Hydrate\Trim, Assert\Between(max: 45)]
+  #[Mutator\Trim, Assert\Between(max: 45)]
   private string $name;
 
   #[Assert\Min(10)]
   private int $age;
 
-  #[Hydrate\ArrayOfClassType(HistoryDTO::class)]
+  #[Mutator\ArrayOfClassType(HistoryDTO::class)]
   private array $histories;
 
   private HistoryDTO $history;

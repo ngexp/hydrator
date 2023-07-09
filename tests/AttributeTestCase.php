@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace Ngexp\Hydrator\Tests;
 
 use Ngexp\Hydrator\Context;
-use Ngexp\Hydrator\Hydrators\ClassType;
+use Ngexp\Hydrator\Mutators\ClassType;
 use Ngexp\Hydrator\ResolvedProperty;
 use Ngexp\Hydrator\Traits\ReflectionUtils;
 use Ngexp\Hydrator\TypeOf;

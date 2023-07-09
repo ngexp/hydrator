@@ -8,7 +8,7 @@ use Ngexp\Hydrator\Adapters\JsonAdapter;
 use Ngexp\Hydrator\Context;
 use Ngexp\Hydrator\Hydrator;
 use Ngexp\Hydrator\HydratorException;
-use Ngexp\Hydrator\Hydrators\CustomHydrator;
+use Ngexp\Hydrator\Mutators\CustomHydrator;
 
 require_once '../vendor/autoload.php';
 
