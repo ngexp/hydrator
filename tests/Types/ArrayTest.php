@@ -25,7 +25,7 @@ class ArraysToHydrate {
     $this->array2 = $array2;
   }
 
-  public function getArray2():array
+  public function getArray2(): array
   {
     return $this->array2;
   }
