@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class AlnumTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_valid_alnum()
+  public function test_valid_alnum(): void
   {
     $attr = new Alnum();
     $result = $attr->process($this->context("ABC123"));
@@ -19,7 +19,7 @@ class AlnumTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_invalid_alnum()
+  public function test_invalid_alnum(): void
   {
     $attr = new Alnum();
     $result = $attr->process($this->context("*"));

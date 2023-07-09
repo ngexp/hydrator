@@ -8,6 +8,9 @@ use Ngexp\Hydrator\Adapters\HydrationAdapter;
 use Ngexp\Hydrator\Mutators\ClassType;
 use Ngexp\Hydrator\Traits\Reflection;
 
+/**
+ * @template T of object
+ */
 class Hydrator
 {
   use Reflection;
@@ -15,7 +18,7 @@ class Hydrator
   private ResolvedProperties $resolvedProperties;
 
   /**
-   * @param class-string          $className
+   * @param class-string<T>       $className
    * @param array<string, string> $customErrorMessages
    */
   public function __construct(private readonly string $className, private readonly array $customErrorMessages = [])
@@ -28,6 +31,9 @@ class Hydrator
   }
 
   /**
+   * @param \Ngexp\Hydrator\Adapters\HydrationAdapter $adapter
+   *
+   * @return T
    * @throws \Ngexp\Hydrator\HydratorException
    */
   public function hydrate(HydrationAdapter $adapter): object
@@ -43,11 +49,8 @@ class Hydrator
       );
     }
 
+    /** @var T $object */
     $object = $context->getValue();
-    if (is_object($object)) {
-      return $object;
-    }
-
-    throw new RuntimeHydrationException("Hydrator::Hydrate internal error, context did not return object.");
+    return $object;
   }
 }

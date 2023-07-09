@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class NotBlankTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_regular_string()
+  public function test_regular_string(): void
   {
     $attr = new NotBlank();
     $result = $attr->process($this->context("Hello, world!"));
@@ -19,7 +19,7 @@ class NotBlankTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_is_empty()
+  public function test_string_is_empty(): void
   {
     $attr = new NotBlank();
     $result = $attr->process($this->context(""));
@@ -28,7 +28,7 @@ class NotBlankTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_contains_spaces_only()
+  public function test_string_contains_spaces_only(): void
   {
     $attr = new NotBlank();
     $result = $attr->process($this->context("  "));
@@ -37,7 +37,7 @@ class NotBlankTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_contains_white_spaces()
+  public function test_string_contains_white_spaces(): void
   {
     $attr = new NotBlank();
     $result = $attr->process($this->context("\t\n"));

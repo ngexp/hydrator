@@ -11,7 +11,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class NegativeOrZeroTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_int_value_is_negative()
+  public function test_int_value_is_negative(): void
   {
     $attr = new NegativeOrZero();
     $result = $attr->process($this->context(-5));
@@ -20,7 +20,7 @@ class NegativeOrZeroTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_int_value_is_zero()
+  public function test_int_value_is_zero(): void
   {
     $attr = new NegativeOrZero();
     $result = $attr->process($this->context(0));
@@ -29,7 +29,7 @@ class NegativeOrZeroTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_int_value_is_positive()
+  public function test_int_value_is_positive(): void
   {
     $attr = new NegativeOrZero();
     $result = $attr->process($this->context(5));
@@ -38,7 +38,7 @@ class NegativeOrZeroTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_float_value_is_negative()
+  public function test_float_value_is_negative(): void
   {
     $attr = new NegativeOrZero();
     $result = $attr->process($this->context(-5.0));
@@ -47,7 +47,7 @@ class NegativeOrZeroTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_float_value_is_zero()
+  public function test_float_value_is_zero(): void
   {
     $attr = new NegativeOrZero();
     $result = $attr->process($this->context(0.0));
@@ -56,7 +56,7 @@ class NegativeOrZeroTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_float_value_is_positive()
+  public function test_float_value_is_positive(): void
   {
     $attr = new NegativeOrZero();
     $result = $attr->process($this->context(5.0));
@@ -65,7 +65,7 @@ class NegativeOrZeroTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_not_a_number()
+  public function test_not_a_number(): void
   {
     $attr = new NegativeOrZero();
     $result = $attr->process($this->context("A"));

@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class GraphTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_valid_graph()
+  public function test_valid_graph(): void
   {
     $attr = new Graph();
     $result = $attr->process($this->context("ABC123"));
@@ -19,7 +19,7 @@ class GraphTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_invalid_graph()
+  public function test_invalid_graph(): void
   {
     $attr = new Graph();
     $result = $attr->process($this->context("ABC\t\n"));

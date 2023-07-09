@@ -1,6 +1,6 @@
 <?php /** @noinspection PhpMultipleClassesDeclarationsInOneFile */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Ngexp\Hydrator\Tests\Mutators;
 
@@ -24,7 +24,7 @@ class NoneInvokable {}
 class CustomHydratorTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_custom_hydrator_with_invokable_class()
+  public function test_custom_hydrator_with_invokable_class(): void
   {
     $attr = new CustomHydrator(IncreaseByOneTest::class);
     $context = $this->context(1);
@@ -39,7 +39,7 @@ class CustomHydratorTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_custom_hydrator_with_non_existing_class()
+  public function test_custom_hydrator_with_non_existing_class(): void
   {
     $attr = new CustomHydrator("SomeClass");
     $context = $this->context(1);
@@ -51,7 +51,7 @@ class CustomHydratorTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_custom_hydrator_with_non_invokable_method()
+  public function test_custom_hydrator_with_non_invokable_method(): void
   {
     $attr = new CustomHydrator(NoneInvokable::class);
     $context = $this->context(1);

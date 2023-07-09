@@ -11,7 +11,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class HashMapTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_hashmap_from_array()
+  public function test_hashmap_from_array(): void
   {
     $attr = new HashMap("key", "value");
     $context = $this->context([["key" => "hello", "value" => "world"]]);
@@ -26,7 +26,7 @@ class HashMapTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_hashmap_with_wrong_key_name()
+  public function test_hashmap_with_wrong_key_name(): void
   {
     $attr = new HashMap("key", "value");
     $context = $attr->process($this->context([["name" => "hello", "value" => "world"]]));
@@ -35,7 +35,7 @@ class HashMapTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_hashmap_with_wrong_value_name()
+  public function test_hashmap_with_wrong_value_name(): void
   {
     $attr = new HashMap("key", "value");
     $context = $attr->process($this->context([["key" => "hello", "info" => "world"]]));
@@ -44,7 +44,7 @@ class HashMapTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_not_a_hashmap()
+  public function test_not_a_hashmap(): void
   {
     $attr = new HashMap("key", "value");
     $context = $attr->process($this->context([1, 2]));

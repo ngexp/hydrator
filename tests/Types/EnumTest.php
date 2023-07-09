@@ -37,7 +37,7 @@ class EnumToHydrate {
 class EnumTest extends TestCase
 {
   /** @throws \Exception */
-  public function test_hydrate_public_enum_prop()
+  public function test_hydrate_public_enum_prop(): void
   {
     $json = '{ "value": "One" }';
     $hydrator = new Hydrator(EnumToHydrate::class);
@@ -48,7 +48,7 @@ class EnumTest extends TestCase
   }
 
   /** @throws \Exception */
-  public function test_hydrate_public_enum_prop_with_null_value_should_throw()
+  public function test_hydrate_public_enum_prop_with_null_value_should_throw(): void
   {
     $this->expectException(HydratorException::class);
 
@@ -59,7 +59,7 @@ class EnumTest extends TestCase
   }
 
   /** @throws \Exception */
-  public function test_hydrate_public_setter_enum_method()
+  public function test_hydrate_public_setter_enum_method(): void
   {
     $json = '{ "value2": "One" }';
     $hydrator = new Hydrator(EnumToHydrate::class);
@@ -70,7 +70,7 @@ class EnumTest extends TestCase
   }
 
   /** @throws \Exception */
-  public function test_hydrate_public_setter_enum_method_with_null_value_should_throw()
+  public function test_hydrate_public_setter_enum_method_with_null_value_should_throw(): void
   {
     $this->expectException(HydratorException::class);
 

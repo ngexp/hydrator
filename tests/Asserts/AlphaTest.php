@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class AlphaTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_valid_alpha()
+  public function test_valid_alpha(): void
   {
     $attr = new Alpha();
     $result = $attr->process($this->context("ABC"));
@@ -19,7 +19,7 @@ class AlphaTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_invalid_alpha()
+  public function test_invalid_alpha(): void
   {
     $attr = new Alpha();
     $result = $attr->process($this->context("ABC123"));

@@ -13,7 +13,7 @@ class LeftTrimTest extends AttributeTestCase
   use ReflectionUtils;
 
   /** @throws \Exception */
-  public function test_string_no_left_trim_needed_should_pass()
+  public function test_string_no_left_trim_needed_should_pass(): void
   {
     $attr = new LeftTrim();
     $context = $this->context("Hello");
@@ -27,7 +27,7 @@ class LeftTrimTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_left_trim_should_pass()
+  public function test_string_left_trim_should_pass(): void
   {
     $attr = new LeftTrim();
     $context = $this->context("\t  \n Hello  ");
@@ -41,7 +41,7 @@ class LeftTrimTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_left_trim_of_type_int()
+  public function test_string_left_trim_of_type_int(): void
   {
     $attr = new LeftTrim();
     $context = $attr->process($this->context(66));

@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class PatternTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_string_match()
+  public function test_string_match(): void
   {
     $attr = new Pattern('/^\D+$/');
     $result = $attr->process($this->context("Hello"));
@@ -19,7 +19,7 @@ class PatternTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_does_not_match()
+  public function test_string_does_not_match(): void
   {
     $attr = new Pattern('/^\D+$/');
     $result = $attr->process($this->context("33"));

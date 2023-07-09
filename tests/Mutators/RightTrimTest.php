@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class RightTrimTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_string_no_right_trim_needed_should_pass()
+  public function test_string_no_right_trim_needed_should_pass(): void
   {
     $attr = new RightTrim();
     $context = $attr->process($this->context("Hello"));
@@ -23,7 +23,7 @@ class RightTrimTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_right_trim_should_pass()
+  public function test_string_right_trim_should_pass(): void
   {
     $attr = new RightTrim();
     $context = $attr->process($this->context("  Hello \t  \n  "));
@@ -36,7 +36,7 @@ class RightTrimTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_right_trim_of_type_int_should_throw()
+  public function test_string_right_trim_of_type_int_should_throw(): void
   {
     $attr = new RightTrim();
     $context = $attr->process($this->context(66));

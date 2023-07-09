@@ -7,7 +7,6 @@ namespace Ngexp\Hydrator\Tests\Mutators;
 use Ngexp\Hydrator\Mutators\AutoCast;
 use Ngexp\Hydrator\Tests\AttributeTestCase;
 use Ngexp\Hydrator\Type;
-use PHPUnit\Framework\TestCase;
 
 class AutoCastTest extends AttributeTestCase
 {

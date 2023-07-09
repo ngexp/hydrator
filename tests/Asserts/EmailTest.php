@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class EmailTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_valid_email()
+  public function test_valid_email(): void
   {
     $attr = new Email();
     $result = $attr->process($this->context("john@doe.com"));
@@ -19,7 +19,7 @@ class EmailTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_invalid_email()
+  public function test_invalid_email(): void
   {
     $attr = new Email();
     $result = $attr->process($this->context("john_doe.com"));

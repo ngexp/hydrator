@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class UpperCaseTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_convert_lower_case_to_upper_case_chars()
+  public function test_convert_lower_case_to_upper_case_chars(): void
   {
     $attr = new UpperCase();
     $context = $attr->process($this->context("hello"));
@@ -23,7 +23,7 @@ class UpperCaseTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_upper_case_invalid_type()
+  public function test_upper_case_invalid_type(): void
   {
     $attr = new UpperCase();
     $context = $attr->process($this->context(66));

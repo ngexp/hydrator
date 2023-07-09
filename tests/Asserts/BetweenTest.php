@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class BetweenTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_string_len_is_greater_than_min()
+  public function test_string_len_is_greater_than_min(): void
   {
     $attr = new Between(min: 2);
     $result = $attr->process($this->context("Hello"));
@@ -19,7 +19,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_len_is_equal_to_min()
+  public function test_string_len_is_equal_to_min(): void
   {
     $attr = new Between(min: 2);
     $result = $attr->process($this->context("He"));
@@ -28,7 +28,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_len_is_less_than_min()
+  public function test_string_len_is_less_than_min(): void
   {
     $attr = new Between(min: 2);
     $result = $attr->process($this->context("H"));
@@ -37,7 +37,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_len_is_less_than_max()
+  public function test_string_len_is_less_than_max(): void
   {
     $attr = new Between(max: 10);
     $result = $attr->process($this->context("Hello"));
@@ -46,7 +46,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_len_is_equal_to_max()
+  public function test_string_len_is_equal_to_max(): void
   {
     $attr = new Between(max: 10);
     $result = $attr->process($this->context("Hello, wor"));
@@ -55,7 +55,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_len_is_greater_than_max()
+  public function test_string_len_is_greater_than_max(): void
   {
     $attr = new Between(max: 10);
     $result = $attr->process($this->context("Hello, word!"));
@@ -64,7 +64,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_len_is_between_min_and_max_size()
+  public function test_string_len_is_between_min_and_max_size(): void
   {
     $attr = new Between(min: 2, max: 10);
     $result = $attr->process($this->context("Hello"));
@@ -73,7 +73,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_len_is_less_than_min_and_max_size()
+  public function test_string_len_is_less_than_min_and_max_size(): void
   {
     $attr = new Between(min: 2, max: 10);
     $result = $attr->process($this->context("H"));
@@ -82,7 +82,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_string_len_is_greater_than_min_and_max_size()
+  public function test_string_len_is_greater_than_min_and_max_size(): void
   {
     $attr = new Between(min: 2, max: 10);
     $result = $attr->process($this->context("Hello, world!"));
@@ -91,7 +91,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_array_size_is_greater_than_min()
+  public function test_array_size_is_greater_than_min(): void
   {
     $attr = new Between(min: 2);
     $result = $attr->process($this->context([1, 2, 3]));
@@ -100,7 +100,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_array_size_is_equal_to_min()
+  public function test_array_size_is_equal_to_min(): void
   {
     $attr = new Between(min: 2);
     $result = $attr->process($this->context([1, 2]));
@@ -109,7 +109,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_array_size_is_less_than_min()
+  public function test_array_size_is_less_than_min(): void
   {
     $attr = new Between(min: 2);
     $result = $attr->process($this->context([1]));
@@ -118,7 +118,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_array_size_is_less_than_max()
+  public function test_array_size_is_less_than_max(): void
   {
     $attr = new Between(max: 10);
     $result = $attr->process($this->context([1, 2, 3, 4]));
@@ -127,7 +127,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_array_size_is_equal_to_max()
+  public function test_array_size_is_equal_to_max(): void
   {
     $attr = new Between(max: 10);
     $result = $attr->process($this->context([1, 2, 3, 4, 5, 6, 7, 8, 9, 10]));
@@ -136,7 +136,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_array_size_is_greater_than_max()
+  public function test_array_size_is_greater_than_max(): void
   {
     $attr = new Between(max: 10);
     $result = $attr->process($this->context([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]));
@@ -145,7 +145,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_array_size_is_between_min_and_max_size()
+  public function test_array_size_is_between_min_and_max_size(): void
   {
     $attr = new Between(min: 2, max: 10);
     $result = $attr->process($this->context([1, 2, 3, 4]));
@@ -154,7 +154,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_array_size_is_less_than_min_and_max_size()
+  public function test_array_size_is_less_than_min_and_max_size(): void
   {
     $attr = new Between(min: 2, max: 10);
     $result = $attr->process($this->context([1]));
@@ -163,7 +163,7 @@ class BetweenTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_array_size_is_greater_than_min_and_max_size()
+  public function test_array_size_is_greater_than_min_and_max_size(): void
   {
     $attr = new Between(min: 2, max: 10);
     $result = $attr->process($this->context([1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]));

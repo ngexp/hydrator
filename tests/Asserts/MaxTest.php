@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class MaxTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_int_value_less_than_max()
+  public function test_int_value_less_than_max(): void
   {
     $attr = new Max(10);
     $result = $attr->process($this->context(5));
@@ -19,7 +19,7 @@ class MaxTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_int_value_greater_than_max()
+  public function test_int_value_greater_than_max(): void
   {
     $attr = new Max(10);
     $result = $attr->process($this->context(15));
@@ -28,7 +28,7 @@ class MaxTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_int_value_equal_to_max()
+  public function test_int_value_equal_to_max(): void
   {
     $attr = new Max(10);
     $result = $attr->process($this->context(10));

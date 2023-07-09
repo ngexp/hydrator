@@ -15,7 +15,7 @@ class CoerceStringTest extends AttributeTestCase
   use ReflectionUtils;
 
   /** @throws \Exception */
-  public function test_coerce_string_from_string()
+  public function test_coerce_string_from_string(): void
   {
     $attr = new CoerceString();
     $context = $this->context("Hello, world!");
@@ -30,7 +30,7 @@ class CoerceStringTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_coerce_string_from_int()
+  public function test_coerce_string_from_int(): void
   {
     $attr = new CoerceString();
     $context = $this->context(100);
@@ -45,7 +45,7 @@ class CoerceStringTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_coerce_string_from_float_should_pass()
+  public function test_coerce_string_from_float_should_pass(): void
   {
     $attr = new CoerceString();
     $context = $this->context(100.1);
@@ -60,7 +60,7 @@ class CoerceStringTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_coerce_string_from_object_should_throw()
+  public function test_coerce_string_from_object_should_throw(): void
   {
     $attr = new CoerceString();
     $context = $attr->process($this->context(new stdClass()));
@@ -69,7 +69,7 @@ class CoerceStringTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_coerce_string_from_array_should_throw()
+  public function test_coerce_string_from_array_should_throw(): void
   {
     $attr = new CoerceString();
     $context = $attr->process($this->context([]));

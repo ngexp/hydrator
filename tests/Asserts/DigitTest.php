@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class DigitTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_valid_digit()
+  public function test_valid_digit(): void
   {
     $attr = new Digit();
     $result = $attr->process($this->context("123"));
@@ -19,7 +19,7 @@ class DigitTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_invalid_digit()
+  public function test_invalid_digit(): void
   {
     $attr = new Digit();
     $result = $attr->process($this->context("not a number"));

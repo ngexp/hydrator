@@ -51,7 +51,7 @@ class BoolTest extends TestCase
 
     $class = $hydrator->hydrate(new JsonAdapter($json));
 
-    $this->assertEquals(true, $class->bool1);
+    $this->assertTrue($class->bool1);
   }
 
   /** @throws \Exception */
@@ -73,7 +73,7 @@ class BoolTest extends TestCase
 
     $class = $hydrator->hydrate(new JsonAdapter($json));
 
-    $this->assertEquals(false, $class->getBool2());
+    $this->assertFalse($class->getBool2());
   }
 
   /** @throws \Exception */

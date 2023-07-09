@@ -10,7 +10,7 @@ use Ngexp\Hydrator\Tests\AttributeTestCase;
 class MinTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_int_value_greater_than_min()
+  public function test_int_value_greater_than_min(): void
   {
     $attr = new Min(5);
     $result = $attr->process($this->context(10));
@@ -19,7 +19,7 @@ class MinTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_int_value_less_than_min()
+  public function test_int_value_less_than_min(): void
   {
     $attr = new Min(5);
     $result = $attr->process($this->context(1));
@@ -28,7 +28,7 @@ class MinTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_int_value_equal_to_min()
+  public function test_int_value_equal_to_min(): void
   {
     $attr = new Min(5);
     $result = $attr->process($this->context(5));

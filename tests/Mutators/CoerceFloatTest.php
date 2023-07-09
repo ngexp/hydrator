@@ -14,7 +14,7 @@ class CoerceFloatTest extends AttributeTestCase
   use ReflectionUtils;
 
   /** @throws \Exception */
-  public function test_coerce_float_from_float_value()
+  public function test_coerce_float_from_float_value(): void
   {
     $attr = new CoerceFloat();
     $context = $this->context(1.0);
@@ -29,7 +29,7 @@ class CoerceFloatTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_coerce_float_from_string_char()
+  public function test_coerce_float_from_string_char(): void
   {
     $attr = new CoerceFloat();
     $context = $this->context("Hello");
@@ -38,7 +38,7 @@ class CoerceFloatTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_coerce_float_from_int()
+  public function test_coerce_float_from_int(): void
   {
     $attr = new CoerceFloat();
     $context = $this->context(1);
@@ -53,7 +53,7 @@ class CoerceFloatTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_coerce_float_from_string_number()
+  public function test_coerce_float_from_string_number(): void
   {
     $attr = new CoerceFloat();
     $context = $this->context("100");

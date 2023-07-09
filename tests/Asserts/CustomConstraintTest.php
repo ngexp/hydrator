@@ -26,7 +26,7 @@ class NoneInvokable {}
 class CustomConstraintTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_custom_constraint_with_invokable_class()
+  public function test_custom_constraint_with_invokable_class(): void
   {
      $attr = new CustomConstraint(GreaterThan10::class);
      $context = $this->context(15);
@@ -36,7 +36,7 @@ class CustomConstraintTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_custom_constraint_with_non_existing_class()
+  public function test_custom_constraint_with_non_existing_class(): void
   {
     $attr = new CustomConstraint("SomeClass");
     $context = $this->context(15);
@@ -48,7 +48,7 @@ class CustomConstraintTest extends AttributeTestCase
   }
 
   /** @throws \Exception */
-  public function test_custom_hydrator_with_non_invokable_method()
+  public function test_custom_hydrator_with_non_invokable_method(): void
   {
     $attr = new CustomConstraint(NoneInvokable::class);
     $context = $this->context(1);

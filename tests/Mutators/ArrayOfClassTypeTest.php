@@ -16,7 +16,7 @@ class History
 class ArrayOfClassTypeTest extends AttributeTestCase
 {
   /** @throws \Exception */
-  public function test_hydrate_array()
+  public function test_hydrate_array(): void
   {
     $attr = new ArrayOfClassType(History::class);
     $context = $this->context([["year" => 2022, "event" => "An event"]]);
